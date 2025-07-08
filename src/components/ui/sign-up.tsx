@@ -34,7 +34,7 @@ interface SignUpPageProps {
 // --- SUB-COMPONENTS ---
 
 const GlassInputWrapper = ({ children }: { children: React.ReactNode }) => (
-  <div className="rounded-2xl border border-border bg-foreground/5 backdrop-blur-sm transition-all duration-200 focus-within:border-gray-400 focus-within:bg-gray-200">
+  <div className="rounded-xl border border-border bg-foreground/5 backdrop-blur-sm transition-all duration-200 focus-within:border-gray-400 focus-within:bg-gray-200">
     {children}
   </div>
 );
@@ -68,67 +68,69 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
   return (
     <div className="min-h-screen flex flex-col lg:flex-row font-geist">
       {/* Left column: sign-up form */}
-      <section className="flex-1 flex items-center justify-center p-8">
+      <section className="flex-1 flex items-center justify-center p-6 lg:p-8">
         <div className="w-full max-w-md">
-          <div className="flex flex-col gap-6">
-            <h1 className="animate-element animate-delay-100 text-4xl md:text-5xl font-semibold leading-tight">{title}</h1>
-            <p className="animate-element animate-delay-200 text-muted-foreground">{description}</p>
+          <div className="flex flex-col gap-4">
+            <h1 className="animate-element animate-delay-100 text-3xl lg:text-4xl font-semibold leading-tight">{title}</h1>
+            <p className="animate-element animate-delay-200 text-muted-foreground text-sm">{description}</p>
 
-            <button onClick={onGoogleSignUp} className="animate-element animate-delay-250 w-full flex items-center justify-center gap-3 border border-border rounded-2xl py-4 hover:bg-secondary transition-colors text-white">
+            <button onClick={onGoogleSignUp} className="animate-element animate-delay-250 w-full flex items-center justify-center gap-3 border border-border rounded-xl py-3 hover:bg-secondary transition-colors text-white">
                 <GoogleIcon />
                 S'inscrire avec Google
             </button>
 
             <div className="animate-element animate-delay-300 relative flex items-center justify-center">
               <span className="w-full border-t border-border"></span>
-              <span className="px-4 text-sm text-muted-foreground bg-background absolute">Ou créer un compte</span>
+              <span className="px-3 text-xs text-muted-foreground bg-background absolute">Ou créer un compte</span>
             </div>
 
-            <form className="space-y-4" onSubmit={onSignUp}>
-              <div className="animate-element animate-delay-300">
-                <label htmlFor="firstName" className="text-sm font-medium text-muted-foreground">Prénom</label>
-                <GlassInputWrapper>
-                  <input 
-                    id="firstName"
-                    name="firstName" 
-                    type="text" 
-                    placeholder="Entrez votre prénom" 
-                    className="w-full bg-transparent text-sm p-4 rounded-2xl focus:outline-none text-foreground" 
-                    required
-                  />
-                </GlassInputWrapper>
+            <form className="space-y-3" onSubmit={onSignUp}>
+              {/* Name fields in a grid */}
+              <div className="animate-element animate-delay-300 grid grid-cols-2 gap-3">
+                <div>
+                  <label htmlFor="firstName" className="text-xs font-medium text-muted-foreground">Prénom</label>
+                  <GlassInputWrapper>
+                    <input 
+                      id="firstName"
+                      name="firstName" 
+                      type="text" 
+                      placeholder="Prénom" 
+                      className="w-full bg-transparent text-sm p-3 rounded-xl focus:outline-none text-foreground" 
+                      required
+                    />
+                  </GlassInputWrapper>
+                </div>
+                <div>
+                  <label htmlFor="lastName" className="text-xs font-medium text-muted-foreground">Nom</label>
+                  <GlassInputWrapper>
+                    <input 
+                      id="lastName"
+                      name="lastName" 
+                      type="text" 
+                      placeholder="Nom" 
+                      className="w-full bg-transparent text-sm p-3 rounded-xl focus:outline-none text-foreground" 
+                      required
+                    />
+                  </GlassInputWrapper>
+                </div>
               </div>
 
               <div className="animate-element animate-delay-350">
-                <label htmlFor="lastName" className="text-sm font-medium text-muted-foreground">Nom</label>
+                <label htmlFor="email" className="text-xs font-medium text-muted-foreground">Email</label>
                 <GlassInputWrapper>
                   <input 
-                    id="lastName"
-                    name="lastName" 
-                    type="text" 
-                    placeholder="Entrez votre nom" 
-                    className="w-full bg-transparent text-sm p-4 rounded-2xl focus:outline-none text-foreground" 
+                    id="email"
+                    name="email" 
+                    type="email" 
+                    placeholder="votre@email.com" 
+                    className="w-full bg-transparent text-sm p-3 rounded-xl focus:outline-none text-foreground" 
                     required
                   />
                 </GlassInputWrapper>
               </div>
 
               <div className="animate-element animate-delay-400">
-                <label htmlFor="email" className="text-sm font-medium text-muted-foreground">Adresse email</label>
-                <GlassInputWrapper>
-                  <input 
-                    id="email"
-                    name="email" 
-                    type="email" 
-                    placeholder="Entrez votre adresse email" 
-                    className="w-full bg-transparent text-sm p-4 rounded-2xl focus:outline-none text-foreground" 
-                    required
-                  />
-                </GlassInputWrapper>
-              </div>
-
-              <div className="animate-element animate-delay-450">
-                <label htmlFor="password" className="text-sm font-medium text-muted-foreground">Mot de passe</label>
+                <label htmlFor="password" className="text-xs font-medium text-muted-foreground">Mot de passe</label>
                 <GlassInputWrapper>
                   <div className="relative">
                     <input 
@@ -136,26 +138,27 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
                       name="password" 
                       type={showPassword ? 'text' : 'password'} 
                       placeholder="Créez un mot de passe" 
-                      className="w-full bg-transparent text-sm p-4 pr-12 rounded-2xl focus:outline-none text-foreground" 
+                      className="w-full bg-transparent text-sm p-3 pr-10 rounded-xl focus:outline-none text-foreground" 
                       required
+                      minLength={8}
                     />
                     <button 
                       type="button" 
                       onClick={() => setShowPassword(!showPassword)} 
-                      className="absolute top-1/2 -translate-y-1/2 right-3 flex items-center justify-center bg-gray-200 hover:bg-gray-300 rounded-lg p-1 w-8 h-8 transition-colors"
+                      className="absolute top-1/2 -translate-y-1/2 right-3 flex items-center justify-center bg-gray-200 hover:bg-gray-300 rounded-lg p-1 w-6 h-6 transition-colors"
                       aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
                     >
                       {showPassword ? 
-                        <EyeOff className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors" /> : 
-                        <Eye className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors" />
+                        <EyeOff className="w-4 h-4 text-muted-foreground hover:text-foreground transition-colors" /> : 
+                        <Eye className="w-4 h-4 text-muted-foreground hover:text-foreground transition-colors" />
                       }
                     </button>
                   </div>
                 </GlassInputWrapper>
               </div>
 
-              <div className="animate-element animate-delay-500">
-                <label htmlFor="confirmPassword" className="text-sm font-medium text-muted-foreground">Confirmer le mot de passe</label>
+              <div className="animate-element animate-delay-450">
+                <label htmlFor="confirmPassword" className="text-xs font-medium text-muted-foreground">Confirmer le mot de passe</label>
                 <GlassInputWrapper>
                   <div className="relative">
                     <input 
@@ -163,25 +166,25 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
                       name="confirmPassword" 
                       type={showConfirmPassword ? 'text' : 'password'} 
                       placeholder="Confirmez votre mot de passe" 
-                      className="w-full bg-transparent text-sm p-4 pr-12 rounded-2xl focus:outline-none text-foreground" 
+                      className="w-full bg-transparent text-sm p-3 pr-10 rounded-xl focus:outline-none text-foreground" 
                       required
                     />
                     <button 
                       type="button" 
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)} 
-                      className="absolute top-1/2 -translate-y-1/2 right-3 flex items-center justify-center bg-gray-200 hover:bg-gray-300 rounded-lg p-1 w-8 h-8 transition-colors"
+                      className="absolute top-1/2 -translate-y-1/2 right-3 flex items-center justify-center bg-gray-200 hover:bg-gray-300 rounded-lg p-1 w-6 h-6 transition-colors"
                       aria-label={showConfirmPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
                     >
                       {showConfirmPassword ? 
-                        <EyeOff className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors" /> : 
-                        <Eye className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors" />
+                        <EyeOff className="w-4 h-4 text-muted-foreground hover:text-foreground transition-colors" /> : 
+                        <Eye className="w-4 h-4 text-muted-foreground hover:text-foreground transition-colors" />
                       }
                     </button>
                   </div>
                 </GlassInputWrapper>
               </div>
 
-              <div className="animate-element animate-delay-550 flex items-start gap-3 text-sm">
+              <div className="animate-element animate-delay-500 flex items-start gap-2 text-xs">
                 <input 
                   type="checkbox" 
                   id="acceptTerms"
@@ -198,14 +201,14 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
 
               <button 
                 type="submit" 
-                className="animate-element animate-delay-600 w-full rounded-2xl bg-primary py-4 font-medium text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="animate-element animate-delay-550 w-full rounded-xl bg-primary py-3 font-medium text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={!acceptTerms}
               >
                 Créer mon compte
               </button>
             </form>
 
-            <p className="animate-element animate-delay-700 text-center text-sm text-muted-foreground">
+            <p className="animate-element animate-delay-600 text-center text-xs text-muted-foreground">
               Déjà un compte ? <a href="#" onClick={(e) => { e.preventDefault(); onSignIn?.(); }} className="text-violet-400 hover:underline transition-colors">Se connecter</a>
             </p>
           </div>

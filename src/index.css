@@ -220,3 +220,46 @@ button:focus-visible {
   font-size: 12px;
   font-weight: bold;
 }
+
+/* Marketplace Scrolling Animations */
+@keyframes scrollDown {
+  0% {
+    transform: translateY(-50%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+
+@keyframes scrollDownDelayed {
+  0% {
+    transform: translateY(-60%);
+  }
+  100% {
+    transform: translateY(-10%);
+  }
+}
+
+@keyframes scrollDownSlow {
+  0% {
+    transform: translateY(-55%);
+  }
+  100% {
+    transform: translateY(-5%);
+  }
+}
+
+.animate-scroll-down {
+  animation: scrollDown 22s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  will-change: transform;
+}
+
+.animate-scroll-down-delayed {
+  animation: scrollDownDelayed 25s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  will-change: transform;
+}
+
+.animate-scroll-down-slow {
+  animation: scrollDownSlow 28s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  will-change: transform;
+}
