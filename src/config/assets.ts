@@ -14,5 +14,10 @@ export const assets = {
   ebook2Pdf: '/ebook2.pdf',
   ebook3Pdf: '/ebook3.pdf',
   ebook4Pdf: '/ebook4.pdf',
+  // Video URLs (using sample video for testing)
+  video1: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+  video2: '/video2.mp4',
+  video3: '/video3.mp4',
+  video4: '/video4.mp4',
   // Add more asset paths as needed
 }; 

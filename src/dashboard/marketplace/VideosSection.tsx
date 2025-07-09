@@ -1,5 +1,7 @@
-import React from 'react';
-import { Play, Clock, Eye, ThumbsUp, Share2, MoreVertical, User } from 'lucide-react';
+import React, { useState } from 'react';
+import { Play, Clock, Eye, ThumbsUp, Share2, MoreVertical, User, Monitor } from 'lucide-react';
+import VideoPreviewModal from '../../components/VideoPreviewModal';
+import { assets } from '../../config/assets';
 
 interface Video {
   id: string;
@@ -13,9 +15,48 @@ interface Video {
   description: string;
   likes: string;
   verified: boolean;
+  videoUrl?: string;
 }
 
 const VideosSection: React.FC = () => {
+  const [videoPreview, setVideoPreview] = useState<{
+    isOpen: boolean;
+    videoUrl: string;
+    title: string;
+    channel: string;
+    duration: string;
+    views: string;
+  }>({
+    isOpen: false,
+    videoUrl: '',
+    title: '',
+    channel: '',
+    duration: '',
+    views: ''
+  });
+
+  const openVideoPreview = (videoUrl: string, title: string, channel: string, duration: string, views: string) => {
+    setVideoPreview({
+      isOpen: true,
+      videoUrl,
+      title,
+      channel,
+      duration,
+      views
+    });
+  };
+
+  const closeVideoPreview = () => {
+    setVideoPreview({
+      isOpen: false,
+      videoUrl: '',
+      title: '',
+      channel: '',
+      duration: '',
+      views: ''
+    });
+  };
+
   const videos: Video[] = [
     {
       id: '1',
@@ -28,7 +69,8 @@ const VideosSection: React.FC = () => {
       uploadTime: '2 days ago',
       description: 'Learn how to implement AI strategies that will revolutionize your business operations...',
       likes: '3.2K',
-      verified: true
+      verified: true,
+      videoUrl: assets.video1
     },
     {
       id: '2',
@@ -306,6 +348,15 @@ const VideosSection: React.FC = () => {
                 <Clock className="w-3 h-3" />
                 <span>Watch Later</span>
               </button>
+              {video.videoUrl && (
+                <button 
+                  onClick={() => openVideoPreview(video.videoUrl!, video.title, video.channel, video.duration, video.views)}
+                  className="flex items-center space-x-1 text-primary hover:text-primary/80 text-xs font-medium"
+                >
+                  <Monitor className="w-3 h-3" />
+                  <span>Preview</span>
+                </button>
+              )}
             </div>
           </div>
         ))}
@@ -317,6 +368,17 @@ const VideosSection: React.FC = () => {
           Load More Videos
         </button>
       </div>
+
+      {/* Video Preview Modal */}
+      <VideoPreviewModal
+        isOpen={videoPreview.isOpen}
+        onClose={closeVideoPreview}
+        videoUrl={videoPreview.videoUrl}
+        title={videoPreview.title}
+        channel={videoPreview.channel}
+        duration={videoPreview.duration}
+        views={videoPreview.views}
+      />
     </div>
   );
 };
