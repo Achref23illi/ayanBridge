@@ -3,6 +3,8 @@ import Sidebar from './Sidebar';
 import Home from './Home';
 import Marketplace from './Marketplace';
 import LearnHub from './LearnHub';
+import ClubInvest from './ClubInvest';
+import AIStudio from './AIStudio';
 
 interface DashboardLayoutProps {
   children?: React.ReactNode;
@@ -28,9 +30,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       case 'learnHub':
         return <LearnHub />;
       case 'aiStudio':
-        return <div className="p-8"><h1 className="text-2xl font-bold text-white">AI Studio - Coming Soon</h1></div>;
+        return <AIStudio />;
       case 'clubInvest':
-        return <div className="p-8"><h1 className="text-2xl font-bold text-white">Club Invest - Coming Soon</h1></div>;
+        return <ClubInvest />;
       default:
         return <Home />;
     }
@@ -59,15 +61,17 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
-        {/* Dashboard Header */}
-        <header className="bg-secondary-light shadow-sm border-b border-white/10 flex-shrink-0">
-          <div className="px-8 py-6">
-            <h1 className="text-2xl font-bold text-white tracking-tight">{getHeaderTitle()}</h1>
-          </div>
-        </header>
+        {/* Dashboard Header - Hide for AI Studio */}
+        {activeItem !== 'aiStudio' && (
+          <header className="bg-secondary-light shadow-sm border-b border-white/10 flex-shrink-0">
+            <div className="px-8 py-6">
+              <h1 className="text-2xl font-bold text-white tracking-tight">{getHeaderTitle()}</h1>
+            </div>
+          </header>
+        )}
 
         {/* Dashboard Content */}
-        <main className="flex-1">
+        <main className={activeItem === 'aiStudio' ? 'flex-1 h-full' : 'flex-1'}>
           {renderContent()}
         </main>
       </div>

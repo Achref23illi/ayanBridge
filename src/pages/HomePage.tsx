@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
 import Testimonials from '../components/testimonial/Testimonials';
 
-const videoUrl = "https://videos.pexels.com/video-files/6985427/6985427-uhd_2560_1440_25fps.mp4";
+const videoUrl = "https://videos.pexels.com/video-files/6985691/6985691-uhd_2560_1440_25fps.mp4";
 
 const HeroSection = () => {
     const heroRef = useRef<HTMLDivElement>(null);
