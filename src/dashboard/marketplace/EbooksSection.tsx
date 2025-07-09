@@ -22,7 +22,7 @@ const EbooksSection: React.FC = () => {
       id: '1',
       title: 'AI-Driven Business Transformation',
       author: 'Sarah Johnson',
-      cover: '/api/placeholder/200/300',
+      cover: 'https://images.unsplash.com/photo-1589254065878-42c9da997008?w=300&h=400&fit=crop',
       rating: 4.8,
       reviews: 234,
       price: 29.99,
@@ -35,7 +35,7 @@ const EbooksSection: React.FC = () => {
       id: '2',
       title: 'Machine Learning for Entrepreneurs',
       author: 'David Chen',
-      cover: '/api/placeholder/200/300',
+      cover: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=400&fit=crop',
       rating: 4.6,
       reviews: 187,
       price: 24.99,
@@ -47,7 +47,7 @@ const EbooksSection: React.FC = () => {
       id: '3',
       title: 'Digital Marketing Revolution',
       author: 'Maria Rodriguez',
-      cover: '/api/placeholder/200/300',
+      cover: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=300&h=400&fit=crop',
       rating: 4.9,
       reviews: 312,
       price: 19.99,
@@ -60,13 +60,113 @@ const EbooksSection: React.FC = () => {
       id: '4',
       title: 'Startup Success Blueprint',
       author: 'Alex Turner',
-      cover: '/api/placeholder/200/300',
+      cover: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=300&h=400&fit=crop',
       rating: 4.7,
       reviews: 156,
       price: 34.99,
       description: 'Essential strategies and frameworks for building and scaling successful startups.',
       pages: 380,
       category: 'Entrepreneurship'
+    },
+    {
+      id: '5',
+      title: 'The Future of Work: AI & Automation',
+      author: 'Dr. Emily Wang',
+      cover: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=300&h=400&fit=crop',
+      rating: 4.9,
+      reviews: 428,
+      price: 32.99,
+      originalPrice: 54.99,
+      description: 'Explore how artificial intelligence and automation are reshaping the future workplace.',
+      pages: 294,
+      category: 'Future of Work'
+    },
+    {
+      id: '6',
+      title: 'Blockchain for Business Leaders',
+      author: 'Michael Roberts',
+      cover: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=300&h=400&fit=crop',
+      rating: 4.5,
+      reviews: 192,
+      price: 27.99,
+      description: 'Understand blockchain technology and its practical applications for modern businesses.',
+      pages: 356,
+      category: 'Blockchain'
+    },
+    {
+      id: '7',
+      title: 'Data Science for Decision Makers',
+      author: 'Jennifer Liu',
+      cover: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=300&h=400&fit=crop',
+      rating: 4.8,
+      reviews: 341,
+      price: 39.99,
+      originalPrice: 69.99,
+      description: 'Learn to leverage data science insights for strategic business decision-making.',
+      pages: 445,
+      category: 'Data Science'
+    },
+    {
+      id: '8',
+      title: 'Cybersecurity Essentials for Executives',
+      author: 'Robert Kim',
+      cover: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=300&h=400&fit=crop',
+      rating: 4.6,
+      reviews: 267,
+      price: 25.99,
+      description: 'Essential cybersecurity knowledge every business leader needs to protect their organization.',
+      pages: 312,
+      category: 'Cybersecurity'
+    },
+    {
+      id: '9',
+      title: 'Remote Team Leadership Mastery',
+      author: 'Lisa Martinez',
+      cover: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=300&h=400&fit=crop',
+      rating: 4.7,
+      reviews: 389,
+      price: 21.99,
+      originalPrice: 41.99,
+      description: 'Master the art of leading and managing high-performing remote teams.',
+      pages: 287,
+      category: 'Leadership'
+    },
+    {
+      id: '10',
+      title: 'E-commerce Growth Strategies',
+      author: 'Carlos Rodriguez',
+      cover: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=300&h=400&fit=crop',
+      rating: 4.8,
+      reviews: 445,
+      price: 28.99,
+      description: 'Proven strategies to scale your e-commerce business and maximize revenue.',
+      pages: 334,
+      category: 'E-commerce'
+    },
+    {
+      id: '11',
+      title: 'UX Design Psychology',
+      author: 'Anna Thompson',
+      cover: 'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=300&h=400&fit=crop',
+      rating: 4.9,
+      reviews: 523,
+      price: 33.99,
+      originalPrice: 52.99,
+      description: 'Understanding user psychology to create compelling and effective user experiences.',
+      pages: 298,
+      category: 'UX Design'
+    },
+    {
+      id: '12',
+      title: 'Financial Technology Revolution',
+      author: 'James Foster',
+      cover: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=300&h=400&fit=crop',
+      rating: 4.4,
+      reviews: 234,
+      price: 36.99,
+      description: 'Explore how fintech is disrupting traditional financial services and creating new opportunities.',
+      pages: 376,
+      category: 'FinTech'
     }
   ];
 
@@ -122,9 +222,15 @@ const EbooksSection: React.FC = () => {
           <div key={book.id} className="bg-secondary-light rounded-xl border border-white/10 overflow-hidden hover:border-white/20 transition-all duration-200 group">
             {/* Book Cover */}
             <div className="relative aspect-[3/4] bg-white/5 overflow-hidden">
-              <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
-                <div className="text-6xl text-white/20">📖</div>
-              </div>
+              <img 
+                src={book.cover} 
+                alt={book.title}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 300" fill="%23374151"><rect width="200" height="300" fill="%23374151"/><text x="100" y="150" text-anchor="middle" fill="%23ffffff" font-family="Arial" font-size="48">📖</text></svg>';
+                }}
+              />
               {book.originalPrice && (
                 <div className="absolute top-3 left-3 bg-red-500 text-white text-xs px-2 py-1 rounded-full font-medium">
                   Save ${(book.originalPrice - book.price).toFixed(0)}

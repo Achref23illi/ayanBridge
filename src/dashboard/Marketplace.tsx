@@ -38,37 +38,56 @@ const Marketplace: React.FC = () => {
   const ActiveComponent = sections.find(section => section.id === activeSection)?.component || EbooksSection;
 
   return (
-    <div className="h-full flex bg-secondary">
-      {/* Sub-sidebar */}
-      <div className="w-64 bg-secondary-light border-r border-white/10 flex flex-col">
-        <div className="p-6 border-b border-white/10">
-          <h2 className="text-xl font-bold text-white">Marketplace</h2>
-          <p className="text-white/60 text-sm mt-1">Explore learning resources</p>
-        </div>
-        
-        <nav className="flex-1 p-4">
-          <div className="space-y-2">
+    <div className="h-full flex flex-col bg-secondary">
+      {/* Header */}
+      <div className="flex-shrink-0 bg-secondary-light border-b border-white/10">
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-2xl font-bold text-white">Marketplace</h2>
+              <p className="text-white/60 text-sm mt-1">Explore learning resources and expand your knowledge</p>
+            </div>
+            <div className="flex items-center space-x-3">
+              <div className="text-right">
+                <div className="text-white text-lg font-semibold">12,847</div>
+                <div className="text-white/50 text-xs">Total Resources</div>
+              </div>
+              <div className="w-px h-8 bg-white/20"></div>
+              <div className="text-right">
+                <div className="text-primary text-lg font-semibold">3,456</div>
+                <div className="text-white/50 text-xs">Your Library</div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Navigation Tabs */}
+          <nav className="flex items-center space-x-2">
             {sections.map((section) => {
               const IconComponent = section.icon;
               return (
                 <button
                   key={section.id}
                   onClick={() => setActiveSection(section.id)}
-                  className={`w-full flex items-center px-4 py-3 text-sm font-medium transition-all duration-200 rounded-xl ${
+                  className={`flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 rounded-xl relative ${
                     activeSection === section.id
-                      ? 'bg-primary/15 text-primary border-l-4 border-primary'
-                      : 'text-white/70 hover:bg-white/5 hover:text-white'
+                      ? 'bg-primary text-white shadow-lg'
+                      : 'text-white/70 hover:bg-white/10 hover:text-white'
                   }`}
                 >
-                  <IconComponent className={`w-5 h-5 mr-3 ${
-                    activeSection === section.id ? 'text-primary' : 'text-white/60'
+                  <IconComponent className={`w-4 h-4 mr-2 ${
+                    activeSection === section.id ? 'text-white' : 'text-white/60'
                   }`} />
                   <span>{section.label}</span>
+                  {activeSection === section.id && (
+                    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full">
+                      <div className="w-2 h-2 bg-primary rotate-45 transform origin-center"></div>
+                    </div>
+                  )}
                 </button>
               );
             })}
-          </div>
-        </nav>
+          </nav>
+        </div>
       </div>
 
       {/* Main Content */}

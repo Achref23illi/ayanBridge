@@ -21,8 +21,8 @@ const LivesSection: React.FC = () => {
       id: '1',
       title: 'Building an AI SaaS from Scratch - Live Coding Session',
       streamer: 'TechFounder_AI',
-      streamerAvatar: '/api/placeholder/40/40',
-      thumbnail: '/api/placeholder/320/180',
+      streamerAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face',
+      thumbnail: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=480&h=270&fit=crop',
       category: 'Development',
       viewers: '2.4K',
       duration: '3:45:12',
@@ -34,8 +34,8 @@ const LivesSection: React.FC = () => {
       id: '2',
       title: 'Investor Q&A: Pitching Your Startup Successfully',
       streamer: 'VCInsights',
-      streamerAvatar: '/api/placeholder/40/40',
-      thumbnail: '/api/placeholder/320/180',
+      streamerAvatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=40&h=40&fit=crop&crop=face',
+      thumbnail: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=480&h=270&fit=crop',
       category: 'Business',
       viewers: '1.8K',
       duration: '2:15:30',
@@ -47,8 +47,8 @@ const LivesSection: React.FC = () => {
       id: '3',
       title: 'Digital Marketing Strategies That Actually Work in 2024',
       streamer: 'MarketingGuru',
-      streamerAvatar: '/api/placeholder/40/40',
-      thumbnail: '/api/placeholder/320/180',
+      streamerAvatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b1c3?w=40&h=40&fit=crop&crop=face',
+      thumbnail: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=480&h=270&fit=crop',
       category: 'Marketing',
       viewers: '3.1K',
       duration: '1:22:45',
@@ -60,8 +60,8 @@ const LivesSection: React.FC = () => {
       id: '4',
       title: 'AI Tools Workshop: Automating Your Business Processes',
       streamer: 'AutomationPro',
-      streamerAvatar: '/api/placeholder/40/40',
-      thumbnail: '/api/placeholder/320/180',
+      streamerAvatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face',
+      thumbnail: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=480&h=270&fit=crop',
       category: 'Technology',
       viewers: '892',
       duration: '0:45:18',
@@ -73,8 +73,8 @@ const LivesSection: React.FC = () => {
       id: '5',
       title: 'Cryptocurrency & Blockchain for Business Leaders',
       streamer: 'BlockchainBiz',
-      streamerAvatar: '/api/placeholder/40/40',
-      thumbnail: '/api/placeholder/320/180',
+      streamerAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&h=40&fit=crop&crop=face',
+      thumbnail: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=480&h=270&fit=crop',
       category: 'Finance',
       viewers: '1.2K',
       duration: '2:08:33',
@@ -86,14 +86,92 @@ const LivesSection: React.FC = () => {
       id: '6',
       title: 'UX/UI Design Critique & Live Redesign Session',
       streamer: 'DesignMaster',
-      streamerAvatar: '/api/placeholder/40/40',
-      thumbnail: '/api/placeholder/320/180',
+      streamerAvatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face',
+      thumbnail: 'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=480&h=270&fit=crop',
       category: 'Design',
       viewers: '567',
       duration: '1:33:22',
       isLive: false,
       tags: ['UI/UX', 'Design', 'Figma'],
       description: 'Live design critique and redesign of submitted user interfaces'
+    },
+    {
+      id: '7',
+      title: 'E-commerce Growth Hacking Live Workshop',
+      streamer: 'EcomGrowth',
+      streamerAvatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=40&h=40&fit=crop&crop=face',
+      thumbnail: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=480&h=270&fit=crop',
+      category: 'E-commerce',
+      viewers: '1.5K',
+      duration: '1:12:34',
+      isLive: true,
+      tags: ['Growth', 'Sales', 'Conversion'],
+      description: 'Real-time e-commerce optimization strategies and case studies'
+    },
+    {
+      id: '8',
+      title: 'Cybersecurity Incident Response Training',
+      streamer: 'CyberSec_Pro',
+      streamerAvatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=40&h=40&fit=crop&crop=face',
+      thumbnail: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=480&h=270&fit=crop',
+      category: 'Security',
+      viewers: '743',
+      duration: '0:58:45',
+      isLive: true,
+      tags: ['Security', 'Response', 'Protection'],
+      description: 'Live cybersecurity training session with real incident scenarios'
+    },
+    {
+      id: '9',
+      title: 'Data Science Model Building Marathon',
+      streamer: 'DataScientist_Live',
+      streamerAvatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=40&h=40&fit=crop&crop=face',
+      thumbnail: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=480&h=270&fit=crop',
+      category: 'Data Science',
+      viewers: '2.1K',
+      duration: '4:23:17',
+      isLive: true,
+      tags: ['Python', 'ML', 'Analytics'],
+      description: 'Building predictive models from scratch with real-world datasets'
+    },
+    {
+      id: '10',
+      title: 'Mobile App Development with React Native',
+      streamer: 'AppDev_Master',
+      streamerAvatar: 'https://images.unsplash.com/photo-1463453091185-61582044d556?w=40&h=40&fit=crop&crop=face',
+      thumbnail: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=480&h=270&fit=crop',
+      category: 'Mobile Dev',
+      viewers: '1.3K',
+      duration: '2:45:52',
+      isLive: false,
+      tags: ['React Native', 'Mobile', 'iOS'],
+      description: 'Complete mobile app development tutorial from concept to deployment'
+    },
+    {
+      id: '11',
+      title: 'Product Management Best Practices Live',
+      streamer: 'PM_Insights',
+      streamerAvatar: 'https://images.unsplash.com/photo-1507101105822-7472b28e22ac?w=40&h=40&fit=crop&crop=face',
+      thumbnail: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=480&h=270&fit=crop',
+      category: 'Product',
+      viewers: '987',
+      duration: '1:34:28',
+      isLive: false,
+      tags: ['Product', 'Strategy', 'Agile'],
+      description: 'Product management strategies for successful product launches'
+    },
+    {
+      id: '12',
+      title: 'Cloud Architecture Design Workshop',
+      streamer: 'CloudArchitect',
+      streamerAvatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face',
+      thumbnail: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=480&h=270&fit=crop',
+      category: 'Cloud',
+      viewers: '654',
+      duration: '2:17:43',
+      isLive: false,
+      tags: ['AWS', 'Azure', 'Architecture'],
+      description: 'Designing scalable cloud architectures for modern applications'
     }
   ];
 
@@ -143,9 +221,15 @@ const LivesSection: React.FC = () => {
           <div key={stream.id} className="group cursor-pointer">
             {/* Stream Thumbnail */}
             <div className="relative aspect-video bg-secondary-light rounded-xl overflow-hidden mb-3">
-              <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
-                <div className="text-4xl text-white/20">📺</div>
-              </div>
+              <img 
+                src={stream.thumbnail} 
+                alt={stream.title}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" fill="%23374151"><rect width="320" height="180" fill="%23374151"/><text x="160" y="90" text-anchor="middle" fill="%23ffffff" font-family="Arial" font-size="24">📺</text></svg>';
+                }}
+              />
 
               {/* Live Badge */}
               {stream.isLive && (
@@ -184,9 +268,15 @@ const LivesSection: React.FC = () => {
               {/* Streamer Info */}
               <div className="flex items-start space-x-3">
                 <div className="flex-shrink-0 relative">
-                  <div className="w-10 h-10 bg-gradient-to-br from-white/20 to-white/10 rounded-full flex items-center justify-center border border-white/10">
-                    <Users className="w-5 h-5 text-white/60" />
-                  </div>
+                  <img 
+                    src={stream.streamerAvatar} 
+                    alt={stream.streamer}
+                    className="w-10 h-10 rounded-full object-cover border border-white/10"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="%23374151"><circle cx="20" cy="20" r="20" fill="%23374151"/><text x="20" y="26" text-anchor="middle" fill="%23ffffff" font-family="Arial" font-size="16">👤</text></svg>';
+                    }}
+                  />
                   {stream.isLive && (
                     <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-secondary-light"></div>
                   )}

@@ -21,8 +21,8 @@ const VideosSection: React.FC = () => {
       id: '1',
       title: 'Complete AI Business Strategy Guide - Transform Your Company in 2024',
       channel: 'AyanBridge Academy',
-      channelAvatar: '/api/placeholder/40/40',
-      thumbnail: '/api/placeholder/320/180',
+      channelAvatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face',
+      thumbnail: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=480&h=270&fit=crop',
       duration: '15:32',
       views: '124K',
       uploadTime: '2 days ago',
@@ -34,8 +34,8 @@ const VideosSection: React.FC = () => {
       id: '2',
       title: 'Machine Learning for Startups: Real-World Applications',
       channel: 'Tech Entrepreneurs',
-      channelAvatar: '/api/placeholder/40/40',
-      thumbnail: '/api/placeholder/320/180',
+      channelAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face',
+      thumbnail: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=480&h=270&fit=crop',
       duration: '22:45',
       views: '89K',
       uploadTime: '5 days ago',
@@ -47,8 +47,8 @@ const VideosSection: React.FC = () => {
       id: '3',
       title: 'Digital Marketing with AI Tools - Complete Masterclass',
       channel: 'Marketing Mastery',
-      channelAvatar: '/api/placeholder/40/40',
-      thumbnail: '/api/placeholder/320/180',
+      channelAvatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b1c3?w=40&h=40&fit=crop&crop=face',
+      thumbnail: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=480&h=270&fit=crop',
       duration: '45:18',
       views: '256K',
       uploadTime: '1 week ago',
@@ -60,8 +60,8 @@ const VideosSection: React.FC = () => {
       id: '4',
       title: 'Building Your First AI-Powered App: Step by Step Tutorial',
       channel: 'Code & Create',
-      channelAvatar: '/api/placeholder/40/40',
-      thumbnail: '/api/placeholder/320/180',
+      channelAvatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=40&h=40&fit=crop&crop=face',
+      thumbnail: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=480&h=270&fit=crop',
       duration: '38:27',
       views: '178K',
       uploadTime: '3 days ago',
@@ -73,8 +73,8 @@ const VideosSection: React.FC = () => {
       id: '5',
       title: 'Investor Pitch Deck Secrets: How to Raise $1M+',
       channel: 'Funding Experts',
-      channelAvatar: '/api/placeholder/40/40',
-      thumbnail: '/api/placeholder/320/180',
+      channelAvatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=40&h=40&fit=crop&crop=face',
+      thumbnail: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=480&h=270&fit=crop',
       duration: '28:14',
       views: '98K',
       uploadTime: '4 days ago',
@@ -86,14 +86,92 @@ const VideosSection: React.FC = () => {
       id: '6',
       title: 'Automation Tools Every Business Owner Should Know',
       channel: 'Business Boost',
-      channelAvatar: '/api/placeholder/40/40',
-      thumbnail: '/api/placeholder/320/180',
+      channelAvatar: 'https://images.unsplash.com/photo-1463453091185-61582044d556?w=40&h=40&fit=crop&crop=face',
+      thumbnail: 'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=480&h=270&fit=crop',
       duration: '19:56',
       views: '67K',
       uploadTime: '6 days ago',
       description: 'Discover the top automation tools that can save you hours every week...',
       likes: '2.3K',
       verified: false
+    },
+    {
+      id: '7',
+      title: 'Blockchain Development Crash Course 2024',
+      channel: 'CryptoDevs',
+      channelAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&h=40&fit=crop&crop=face',
+      thumbnail: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=480&h=270&fit=crop',
+      duration: '52:18',
+      views: '312K',
+      uploadTime: '1 week ago',
+      description: 'Learn blockchain development from scratch with hands-on examples...',
+      likes: '8.1K',
+      verified: true
+    },
+    {
+      id: '8',
+      title: 'UX Design Principles That Convert Users',
+      channel: 'Design Masters',
+      channelAvatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face',
+      thumbnail: 'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=480&h=270&fit=crop',
+      duration: '33:42',
+      views: '189K',
+      uploadTime: '3 days ago',
+      description: 'Master UX design principles that drive user engagement and conversions...',
+      likes: '5.7K',
+      verified: true
+    },
+    {
+      id: '9',
+      title: 'Remote Team Management: Leadership in the Digital Age',
+      channel: 'Leadership Lab',
+      channelAvatar: 'https://images.unsplash.com/photo-1507101105822-7472b28e22ac?w=40&h=40&fit=crop&crop=face',
+      thumbnail: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=480&h=270&fit=crop',
+      duration: '26:35',
+      views: '145K',
+      uploadTime: '5 days ago',
+      description: 'Effective strategies for managing and leading remote teams successfully...',
+      likes: '4.2K',
+      verified: false
+    },
+    {
+      id: '10',
+      title: 'E-commerce Growth Hacking Strategies 2024',
+      channel: 'Growth Hackers',
+      channelAvatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face',
+      thumbnail: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=480&h=270&fit=crop',
+      duration: '41:23',
+      views: '267K',
+      uploadTime: '2 days ago',
+      description: 'Proven growth hacking strategies to scale your e-commerce business rapidly...',
+      likes: '6.8K',
+      verified: true
+    },
+    {
+      id: '11',
+      title: 'Cybersecurity Best Practices for Small Business',
+      channel: 'SecureWorks',
+      channelAvatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=40&h=40&fit=crop&crop=face',
+      thumbnail: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=480&h=270&fit=crop',
+      duration: '29:17',
+      views: '98K',
+      uploadTime: '1 week ago',
+      description: 'Essential cybersecurity practices every small business owner must know...',
+      likes: '3.5K',
+      verified: false
+    },
+    {
+      id: '12',
+      title: 'Data Analytics for Business Intelligence',
+      channel: 'Data Driven',
+      channelAvatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=40&h=40&fit=crop&crop=face',
+      thumbnail: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=480&h=270&fit=crop',
+      duration: '48:56',
+      views: '156K',
+      uploadTime: '4 days ago',
+      description: 'Transform your business with data analytics and business intelligence tools...',
+      likes: '4.9K',
+      verified: true
     }
   ];
 
@@ -140,9 +218,15 @@ const VideosSection: React.FC = () => {
           <div key={video.id} className="group cursor-pointer">
             {/* Video Thumbnail */}
             <div className="relative aspect-video bg-secondary-light rounded-xl overflow-hidden mb-3">
-              <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
-                <div className="text-4xl text-white/20">🎥</div>
-              </div>
+              <img 
+                src={video.thumbnail} 
+                alt={video.title}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" fill="%23374151"><rect width="320" height="180" fill="%23374151"/><text x="160" y="90" text-anchor="middle" fill="%23ffffff" font-family="Arial" font-size="24">🎥</text></svg>';
+                }}
+              />
               
               {/* Play Button Overlay */}
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-200 flex items-center justify-center">
@@ -166,9 +250,15 @@ const VideosSection: React.FC = () => {
             <div className="flex space-x-3">
               {/* Channel Avatar */}
               <div className="flex-shrink-0">
-                <div className="w-10 h-10 bg-gradient-to-br from-white/20 to-white/10 rounded-full flex items-center justify-center border border-white/10">
-                  <User className="w-5 h-5 text-white/60" />
-                </div>
+                <img 
+                  src={video.channelAvatar} 
+                  alt={video.channel}
+                  className="w-10 h-10 rounded-full object-cover border border-white/10"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="%23374151"><circle cx="20" cy="20" r="20" fill="%23374151"/><text x="20" y="26" text-anchor="middle" fill="%23ffffff" font-family="Arial" font-size="16">👤</text></svg>';
+                  }}
+                />
               </div>
 
               {/* Video Details */}
