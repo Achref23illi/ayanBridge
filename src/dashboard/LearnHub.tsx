@@ -14,8 +14,11 @@ import {
   Radio,
   PlusCircle,
   Filter,
-  Search
+  Search,
+  Book
 } from 'lucide-react';
+import { useCart } from '../contexts/CartContext';
+import PDFPreviewModal from '../components/PDFPreviewModal';
 
 interface LearningPath {
   id: string;
@@ -60,6 +63,39 @@ interface Certificate {
 
 const LearnHub: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'overview' | 'paths' | 'sessions' | 'certificates'>('overview');
+  const [pdfPreview, setPdfPreview] = useState<{
+    isOpen: boolean;
+    pdfUrl: string;
+    title: string;
+    author: string;
+  }>({
+    isOpen: false,
+    pdfUrl: '',
+    title: '',
+    author: ''
+  });
+  
+  const { purchasedItems } = useCart();
+
+  const openPDFPreview = (pdfUrl: string, title: string, author: string) => {
+    setPdfPreview({
+      isOpen: true,
+      pdfUrl,
+      title,
+      author
+    });
+  };
+
+  const closePDFPreview = () => {
+    setPdfPreview({
+      isOpen: false,
+      pdfUrl: '',
+      title: '',
+      author: ''
+    });
+  };
+
+  const purchasedEbooks = purchasedItems.filter(item => item.type === 'ebook');
 
   const learningPaths: LearningPath[] = [
     {
@@ -264,6 +300,49 @@ const LearnHub: React.FC = () => {
           ))}
         </div>
       </div>
+
+      {/* Purchased Ebooks */}
+      {purchasedEbooks.length > 0 && (
+        <div className="bg-secondary-light rounded-xl p-6 border border-white/10">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-xl font-bold text-white">Your Ebooks</h3>
+            <button className="text-primary hover:text-primary/80 text-sm font-medium">View All</button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {purchasedEbooks.slice(0, 3).map((ebook) => (
+              <div key={ebook.id} className="bg-white/5 rounded-lg p-4 border border-white/10">
+                <div className="flex items-start space-x-3">
+                  <img
+                    src={ebook.cover}
+                    alt={ebook.title}
+                    className="w-12 h-16 object-cover rounded"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 300" fill="%23374151"><rect width="200" height="300" fill="%23374151"/><text x="100" y="150" text-anchor="middle" fill="%23ffffff" font-family="Arial" font-size="48">📖</text></svg>';
+                    }}
+                  />
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-medium text-white text-sm line-clamp-2 mb-1">
+                      {ebook.title}
+                    </h4>
+                    <p className="text-white/60 text-xs mb-2">by {ebook.author}</p>
+                    <p className="text-white/50 text-xs mb-3">
+                      Purchased on {new Date(ebook.purchaseDate).toLocaleDateString()}
+                    </p>
+                    <button
+                      onClick={() => openPDFPreview(ebook.pdfUrl || '', ebook.title, ebook.author)}
+                      className="w-full bg-primary hover:bg-primary-dark text-white py-2 px-3 rounded-lg text-sm font-medium transition-colors flex items-center justify-center space-x-2"
+                    >
+                      <Book className="w-4 h-4" />
+                      <span>Read</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Upcoming Sessions */}
       <div className="bg-secondary-light rounded-xl p-6 border border-white/10">
@@ -588,6 +667,15 @@ const LearnHub: React.FC = () => {
         {activeTab === 'sessions' && <SessionsTab />}
         {activeTab === 'certificates' && <CertificatesTab />}
       </div>
+
+      {/* PDF Preview Modal */}
+      <PDFPreviewModal
+        isOpen={pdfPreview.isOpen}
+        onClose={closePDFPreview}
+        pdfUrl={pdfPreview.pdfUrl}
+        title={pdfPreview.title}
+        author={pdfPreview.author}
+      />
     </div>
   );
 };

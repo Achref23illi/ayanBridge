@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { Book, Play, Radio, GraduationCap } from 'lucide-react';
+import { Book, Play, Radio, GraduationCap, ShoppingCart } from 'lucide-react';
 import EbooksSection from './marketplace/EbooksSection';
 import VideosSection from './marketplace/VideosSection';
 import LivesSection from './marketplace/LivesSection';
 import FormationsSection from './marketplace/FormationsSection';
+import { useCart } from '../contexts/CartContext';
 
 const Marketplace: React.FC = () => {
   const [activeSection, setActiveSection] = useState('ebooks');
+  const { openCart, getCartCount } = useCart();
 
   const sections = [
     {
@@ -57,6 +59,19 @@ const Marketplace: React.FC = () => {
                 <div className="text-primary text-lg font-semibold">3,456</div>
                 <div className="text-white/50 text-xs">Your Library</div>
               </div>
+              <div className="w-px h-8 bg-white/20"></div>
+              <button
+                onClick={openCart}
+                className="relative p-2 hover:bg-white/10 rounded-lg transition-colors"
+                title="Shopping Cart"
+              >
+                <ShoppingCart className="w-6 h-6 text-white" />
+                {getCartCount() > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-primary text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
+                    {getCartCount()}
+                  </span>
+                )}
+              </button>
             </div>
           </div>
           

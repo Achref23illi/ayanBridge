@@ -1,5 +1,7 @@
 import React from 'react';
 import { Star, Download, Eye, ShoppingCart } from 'lucide-react';
+import { assets } from '../../config/assets';
+import { useCart } from '../../contexts/CartContext';
 
 interface Ebook {
   id: string;
@@ -13,60 +15,67 @@ interface Ebook {
   description: string;
   pages: number;
   category: string;
+  pdfUrl?: string;
 }
 
 const EbooksSection: React.FC = () => {
+  const { addToCart, isItemPurchased } = useCart();
+  
   // Mock data for ebooks
   const ebooks: Ebook[] = [
     {
       id: '1',
       title: 'AI-Driven Business Transformation',
       author: 'Sarah Johnson',
-      cover: 'https://images.unsplash.com/photo-1589254065878-42c9da997008?w=300&h=400&fit=crop',
+      cover: assets.ebook1,
       rating: 4.8,
       reviews: 234,
       price: 29.99,
       originalPrice: 49.99,
       description: 'Learn how to leverage artificial intelligence to transform your business operations and drive innovation.',
       pages: 320,
-      category: 'Business & AI'
+      category: 'Business & AI',
+      pdfUrl: assets.ebook1Pdf
     },
     {
       id: '2',
       title: 'Machine Learning for Entrepreneurs',
       author: 'David Chen',
-      cover: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=400&fit=crop',
+      cover: assets.ebook2,
       rating: 4.6,
       reviews: 187,
       price: 24.99,
       description: 'A practical guide to implementing machine learning solutions in startup environments.',
       pages: 280,
-      category: 'Technology'
+      category: 'Technology',
+      pdfUrl: assets.ebook2Pdf
     },
     {
       id: '3',
       title: 'Digital Marketing Revolution',
       author: 'Maria Rodriguez',
-      cover: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=300&h=400&fit=crop',
+      cover: assets.ebook3,
       rating: 4.9,
       reviews: 312,
       price: 19.99,
       originalPrice: 34.99,
       description: 'Master the latest digital marketing strategies and AI-powered tools to grow your business.',
       pages: 250,
-      category: 'Marketing'
+      category: 'Marketing',
+      pdfUrl: assets.ebook3Pdf
     },
     {
       id: '4',
       title: 'Startup Success Blueprint',
       author: 'Alex Turner',
-      cover: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=300&h=400&fit=crop',
+      cover: assets.ebook4,
       rating: 4.7,
       reviews: 156,
       price: 34.99,
       description: 'Essential strategies and frameworks for building and scaling successful startups.',
       pages: 380,
-      category: 'Entrepreneurship'
+      category: 'Entrepreneurship',
+      pdfUrl: assets.ebook4Pdf
     },
     {
       id: '5',
@@ -278,9 +287,28 @@ const EbooksSection: React.FC = () => {
                   )}
                 </div>
                 <div className="flex items-center space-x-2">
-                  <button className="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors" title="Add to Cart">
-                    <ShoppingCart className="w-4 h-4 text-white" />
-                  </button>
+                  {isItemPurchased(book.id) ? (
+                    <button className="p-2 bg-green-500/20 text-green-400 rounded-lg" title="Already Purchased">
+                      <Download className="w-4 h-4" />
+                    </button>
+                  ) : (
+                    <button 
+                      onClick={() => addToCart({
+                        id: book.id,
+                        title: book.title,
+                        author: book.author,
+                        cover: book.cover,
+                        price: book.price,
+                        originalPrice: book.originalPrice,
+                        type: 'ebook',
+                        pdfUrl: book.pdfUrl
+                      })}
+                      className="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors" 
+                      title="Add to Cart"
+                    >
+                      <ShoppingCart className="w-4 h-4 text-white" />
+                    </button>
+                  )}
                   <button className="p-2 bg-primary hover:bg-primary-dark rounded-lg transition-colors" title="Download">
                     <Download className="w-4 h-4 text-white" />
                   </button>
