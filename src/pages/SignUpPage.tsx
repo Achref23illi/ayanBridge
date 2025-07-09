@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SignUpPage } from '../components/ui/sign-up';
 import type { Testimonial } from '../components/ui/sign-up';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 // AyanBridge-specific testimonials for signup
 const ayanBridgeSignupTestimonials: Testimonial[] = [
@@ -27,31 +28,39 @@ const ayanBridgeSignupTestimonials: Testimonial[] = [
 
 const SignUpPageComponent: React.FC = () => {
   const navigate = useNavigate();
+  const { signup, googleAuth, isLoading } = useAuth();
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSignUp = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSignUp = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const data = Object.fromEntries(formData.entries());
     
     // Basic password confirmation validation
     if (data.password !== data.confirmPassword) {
-      alert("Les mots de passe ne correspondent pas.");
+      setError("Les mots de passe ne correspondent pas.");
       return;
     }
     
-    console.log("Sign Up submitted:", data);
+    setError(null);
     
-    // Simulate successful registration
-    alert("Inscription réussie ! Bienvenue sur AyanBridge !");
-    // Navigate to home page or dashboard
-    navigate('/');
+    try {
+      await signup(data.email as string, data.password as string, data.name as string);
+      navigate('/dashboard');
+    } catch (err) {
+      setError('Erreur lors de l\'inscription');
+    }
   };
 
-  const handleGoogleSignUp = () => {
-    console.log("Google Sign Up clicked");
-    alert("Inscription avec Google en cours...");
-    // Implement Google OAuth integration here
-    navigate('/');
+  const handleGoogleSignUp = async () => {
+    setError(null);
+    
+    try {
+      await googleAuth();
+      navigate('/dashboard');
+    } catch (err) {
+      setError('Erreur lors de l\'inscription avec Google');
+    }
   };
 
   const handleSignIn = () => {

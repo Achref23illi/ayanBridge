@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SignInPage } from '../components/ui/sign-in';
 import type { Testimonial } from '../components/ui/sign-in';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 // AyanBridge-specific testimonials
 const ayanBridgeTestimonials: Testimonial[] = [
@@ -27,25 +28,33 @@ const ayanBridgeTestimonials: Testimonial[] = [
 
 function LoginPage(): React.ReactElement {
   const navigate = useNavigate();
+  const { login, googleAuth, isLoading } = useAuth();
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSignIn = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSignIn = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const data = Object.fromEntries(formData.entries());
     
-    console.log("Sign In submitted:", data);
+    setError(null);
     
-    // Simulate successful login
-    alert("Connexion réussie ! Redirection vers le tableau de bord...");
-    // Navigate to home page or dashboard
-    navigate('/');
+    try {
+      await login(data.email as string, data.password as string);
+      navigate('/dashboard');
+    } catch (err) {
+      setError('Email ou mot de passe incorrect');
+    }
   };
 
-  const handleGoogleSignIn = () => {
-    console.log("Google Sign In clicked");
-    alert("Connexion avec Google en cours...");
-    // Implement Google OAuth integration here
-    navigate('/');
+  const handleGoogleSignIn = async () => {
+    setError(null);
+    
+    try {
+      await googleAuth();
+      navigate('/dashboard');
+    } catch (err) {
+      setError('Erreur lors de la connexion avec Google');
+    }
   };
   
   const handleResetPassword = () => {

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '../../components/ui/Button';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '../../context/AuthContext';
 
 const navLinks = [
   { href: '/marketplace', text: 'Magasin' },
@@ -14,6 +15,7 @@ const navLinks = [
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
+  const { isAuthenticated, user, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,12 +45,32 @@ const Header = () => {
           ))}
         </div>
         <div className="hidden md:flex items-center space-x-4">
-          <Link to="/login">
-            <Button variant="ghost" className="text-white hover:bg-white/10">Connexion</Button>
-          </Link>
-          <Link to="/signup">
-            <Button variant="primary">Inscription</Button>
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <Link to="/dashboard">
+                <Button variant="ghost" className="text-white hover:bg-white/10">Dashboard</Button>
+              </Link>
+              <div className="flex items-center space-x-3">
+                <span className="text-white text-sm">Bonjour, {user?.name}</span>
+                <Button 
+                  onClick={logout} 
+                  variant="ghost" 
+                  className="text-white hover:bg-white/10"
+                >
+                  Déconnexion
+                </Button>
+              </div>
+            </>
+          ) : (
+            <>
+              <Link to="/login">
+                <Button variant="ghost" className="text-white hover:bg-white/10">Connexion</Button>
+              </Link>
+              <Link to="/signup">
+                <Button variant="primary">Inscription</Button>
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -89,12 +111,30 @@ const Header = () => {
                   </Link>
                 ))}
                 <div className="border-t border-white/20 pt-6 flex flex-col space-y-4">
-                  <Link to="/login" onClick={() => setIsMenuOpen(false)}>
-                    <Button variant="ghost" className="text-white hover:bg-white/10 w-full">Connexion</Button>
-                  </Link>
-                  <Link to="/signup" onClick={() => setIsMenuOpen(false)}>
-                    <Button variant="primary" className="w-full">Inscription</Button>
-                  </Link>
+                  {isAuthenticated ? (
+                    <>
+                      <Link to="/dashboard" onClick={() => setIsMenuOpen(false)}>
+                        <Button variant="ghost" className="text-white hover:bg-white/10 w-full">Dashboard</Button>
+                      </Link>
+                      <div className="text-white text-sm mb-2">Bonjour, {user?.name}</div>
+                      <Button 
+                        onClick={() => { logout(); setIsMenuOpen(false); }} 
+                        variant="ghost" 
+                        className="text-white hover:bg-white/10 w-full"
+                      >
+                        Déconnexion
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Link to="/login" onClick={() => setIsMenuOpen(false)}>
+                        <Button variant="ghost" className="text-white hover:bg-white/10 w-full">Connexion</Button>
+                      </Link>
+                      <Link to="/signup" onClick={() => setIsMenuOpen(false)}>
+                        <Button variant="primary" className="w-full">Inscription</Button>
+                      </Link>
+                    </>
+                  )}
                 </div>
               </div>
             </motion.div>
