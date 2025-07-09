@@ -16,15 +16,15 @@ export const colors = {
     foreground: '#FFFFFF',
   },
   background: {
-    DEFAULT: '#FFFFFF', // Blanc épuré
-    alt: '#F4F4F5', // Un gris très clair pour les fonds alternatifs
+    DEFAULT: '#0D1B2A', // Dark theme background
+    alt: '#1B263B', // Slightly lighter dark background for alternatives
   },
   text: {
-    DEFAULT: '#1A202C',
-    light: '#4A5568',
-    inverted: '#FFFFFF',
+    DEFAULT: '#FFFFFF',
+    light: '#FFFFFF99', // 60% white opacity
+    inverted: '#1A202C',
   },
-  foreground: '#1A202C', // Default text color for things like outline badges
+  foreground: '#FFFFFF', // Default text color for things like outline badges
   success: '#4CAF50',
   error: '#F44336',
   warning: '#FFC107',
