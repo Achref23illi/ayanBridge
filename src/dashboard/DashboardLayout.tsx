@@ -60,7 +60,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   return (
     <CartProvider>
       <div className="w-full flex h-screen bg-secondary overflow-hidden">
-        <Sidebar activeItem={activeItem} onItemClick={handleSidebarItemClick} />
+        <Sidebar activeItem={activeItem} onItemClick={handleSidebarItemClick} isInitiallyCollapsed={activeItem === 'aiStudio'} />
 
         {/* Main Content */}
         <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">

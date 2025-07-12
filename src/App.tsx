@@ -7,6 +7,7 @@ import StudioPage from './pages/StudioPage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import DashboardPage from './pages/DashboardPage';
+import RoleSelectionPage from './pages/RoleSelectionPage';
 import MainLayout from './layout/MainLayout';
 import ScrollToTop from './components/ScrollToTop';
 import { AuthProvider } from './context/AuthContext';
@@ -29,6 +30,13 @@ function App() {
             <AuthRedirect>
               <SignUpPage />
             </AuthRedirect>
+          } />
+          
+          {/* Role Selection - requires auth but not role */}
+          <Route path="/role-selection" element={
+            <ProtectedRoute requireRole={false}>
+              <RoleSelectionPage />
+            </ProtectedRoute>
           } />
           
           {/* Protected Dashboard Route */}

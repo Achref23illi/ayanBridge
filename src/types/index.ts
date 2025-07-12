@@ -16,4 +16,14 @@ export interface Testimonial {
   role: string;
   avatarUrl: string;
   testimonial: string;
+}
+
+export type UserRole = 'student' | 'teacher' | 'content_creator' | 'investor' | 'entrepreneur';
+
+export interface UserRoleOption {
+  id: UserRole;
+  title: string;
+  description: string;
+  icon: string;
+  benefits: string[];
 } 

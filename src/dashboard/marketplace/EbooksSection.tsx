@@ -334,4 +334,4 @@ const EbooksSection: React.FC = () => {
   );
 };
 
-export default EbooksSection; 
+export default EbooksSection;

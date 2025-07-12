@@ -29,6 +29,8 @@ interface SignUpPageProps {
   onSignUp?: (event: React.FormEvent<HTMLFormElement>) => void;
   onGoogleSignUp?: () => void;
   onSignIn?: () => void;
+  error?: string | null;
+  isLoading?: boolean;
 }
 
 // --- SUB-COMPONENTS ---
@@ -60,6 +62,8 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
   onSignUp,
   onGoogleSignUp,
   onSignIn,
+  error = null,
+  isLoading = false,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -199,12 +203,18 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
                 </label>
               </div>
 
+              {error && (
+                <div className="animate-element animate-delay-525 text-center text-sm text-red-500 bg-red-50 dark:bg-red-900/20 p-3 rounded-lg border border-red-200 dark:border-red-800">
+                  {error}
+                </div>
+              )}
+
               <button 
                 type="submit" 
                 className="animate-element animate-delay-550 w-full rounded-xl bg-primary py-3 font-medium text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={!acceptTerms}
+                disabled={!acceptTerms || isLoading}
               >
-                Créer mon compte
+                {isLoading ? 'Création en cours...' : 'Créer mon compte'}
               </button>
             </form>
 

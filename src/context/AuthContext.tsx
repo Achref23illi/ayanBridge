@@ -1,10 +1,12 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import type { UserRole } from '../types/index';
 
 interface User {
   id: string;
   email: string;
   name: string;
   avatar?: string;
+  role?: UserRole;
 }
 
 interface AuthContextType {
@@ -15,6 +17,7 @@ interface AuthContextType {
   signup: (email: string, password: string, name: string) => Promise<void>;
   logout: () => void;
   googleAuth: () => Promise<void>;
+  updateUserRole: (role: UserRole) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -39,7 +42,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // Check if user is already logged in (from localStorage)
     const savedUser = localStorage.getItem('user');
     if (savedUser) {
-      setUser(JSON.parse(savedUser));
+      const parsedUser = JSON.parse(savedUser);
+      // Vérifie si le rôle est bien défini (persisté)
+      setUser(parsedUser);
     }
     setIsLoading(false);
   }, []);
@@ -51,11 +56,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Mock user data - replace with actual user data from API
+      // Récupère le rôle existant si déjà enregistré
+      let existingRole: UserRole | undefined = undefined;
+      const savedUser = localStorage.getItem('user');
+      if (savedUser) {
+        try {
+          const parsed = JSON.parse(savedUser);
+          if (parsed && parsed.role) existingRole = parsed.role;
+        } catch {}
+      }
       const userData: User = {
         id: '1',
         email,
         name: 'Achref Arabi',
-        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face'
+        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face',
+        role: existingRole
       };
       
       setUser(userData);
@@ -79,7 +94,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         id: '1',
         email,
         name,
-        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face'
+        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face',
+        role: undefined
       };
       
       setUser(userData);
@@ -103,7 +119,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         id: '1',
         email: 'achref@ayanbridge.com',
         name: 'Achref Arabi',
-        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face'
+        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face',
+        role: undefined
       };
       
       setUser(userData);
@@ -111,6 +128,24 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       localStorage.setItem('isAuthenticated', 'true');
     } catch (error) {
       throw new Error('Google authentication failed');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const updateUserRole = async (role: UserRole): Promise<void> => {
+    if (!user) throw new Error('No user found');
+    
+    setIsLoading(true);
+    try {
+      // Simulate API call to update user role
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      const updatedUser = { ...user, role };
+      setUser(updatedUser);
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+    } catch (error) {
+      throw new Error('Failed to update user role');
     } finally {
       setIsLoading(false);
     }
@@ -129,7 +164,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     login,
     signup,
     logout,
-    googleAuth
+    googleAuth,
+    updateUserRole
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -42,13 +42,21 @@ const SignUpPageComponent: React.FC = () => {
       return;
     }
     
+    // Combine first and last name
+    const fullName = `${data.firstName || ''} ${data.lastName || ''}`.trim();
+    if (!fullName) {
+      setError("Veuillez saisir votre nom et prénom.");
+      return;
+    }
+    
     setError(null);
     
     try {
-      await signup(data.email as string, data.password as string, data.name as string);
-      navigate('/dashboard');
+      await signup(data.email as string, data.password as string, fullName);
+      navigate('/role-selection');
     } catch (err) {
       setError('Erreur lors de l\'inscription');
+      console.error('Signup error:', err);
     }
   };
 
@@ -57,7 +65,7 @@ const SignUpPageComponent: React.FC = () => {
     
     try {
       await googleAuth();
-      navigate('/dashboard');
+      navigate('/role-selection');
     } catch (err) {
       setError('Erreur lors de l\'inscription avec Google');
     }
@@ -81,6 +89,8 @@ const SignUpPageComponent: React.FC = () => {
         onSignUp={handleSignUp}
         onGoogleSignUp={handleGoogleSignUp}
         onSignIn={handleSignIn}
+        error={error}
+        isLoading={isLoading}
       />
     </div>
   );

@@ -26,10 +26,10 @@ interface SidebarProps {
   onItemClick?: (item: string) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ activeItem = 'home', onItemClick }) => {
+function Sidebar({ activeItem = 'home', onItemClick, isInitiallyCollapsed = false }: SidebarProps) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(isInitiallyCollapsed);
 
   const navItems = [
     { id: 'home', label: 'Home', icon: Home },
