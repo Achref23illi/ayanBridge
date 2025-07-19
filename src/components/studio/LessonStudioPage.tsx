@@ -71,6 +71,20 @@ const LessonStudioPage: React.FC<LessonStudioPageProps> = ({ className }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isVideoPinned]);
 
+  // Ensure PiP video is always muted
+  useEffect(() => {
+    if (pipVideoRef.current) {
+      pipVideoRef.current.muted = true;
+    }
+  }, [pipVideoRef.current]);
+
+  // Ensure PiP video is muted when lesson data changes
+  useEffect(() => {
+    if (pipVideoRef.current && lessonData) {
+      pipVideoRef.current.muted = true;
+    }
+  }, [lessonData]);
+
   const handleFileUpload = async (file: File) => {
     setSelectedFile(file);
     setCurrentStep('trainer-mode');
@@ -197,10 +211,14 @@ const LessonStudioPage: React.FC<LessonStudioPageProps> = ({ className }) => {
   // Synchronize video playback between main and PiP videos
   const syncVideoPlayback = (action: 'play' | 'pause') => {
     const videos = [videoRef.current, pipVideoRef.current];
-    videos.forEach(video => {
+    videos.forEach((video, index) => {
       if (video) {
         if (action === 'play') {
           video.play();
+          // Ensure PiP video is always muted
+          if (index === 1) { // pipVideoRef is the second video
+            video.muted = true;
+          }
         } else {
           video.pause();
         }
@@ -883,9 +901,15 @@ const LessonStudioPage: React.FC<LessonStudioPageProps> = ({ className }) => {
                       ref={pipVideoRef}
                       src={lessonData.videoUrl}
                       className="w-full h-full object-cover"
+                      muted
                       onTimeUpdate={handleVideoTimeUpdate}
                       onPlay={handlePipVideoPlay}
                       onPause={handlePipVideoPause}
+                      onLoadedData={() => {
+                        if (pipVideoRef.current) {
+                          pipVideoRef.current.muted = true;
+                        }
+                      }}
                       onSeeked={() => {
                         if (pipVideoRef.current && videoRef.current) {
                           const timeDiff = Math.abs(pipVideoRef.current.currentTime - videoRef.current.currentTime);
