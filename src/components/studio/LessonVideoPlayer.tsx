@@ -1,6 +1,6 @@
 import React, { forwardRef, useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Pause, Volume2, VolumeX, Maximize2, RotateCcw, SkipForward } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX, Maximize2, RotateCcw, SkipForward, Eye, EyeOff, Search } from 'lucide-react';
 import type { TranscriptSegment } from '../../types/studio';
 
 interface LessonVideoPlayerProps {
@@ -8,16 +8,21 @@ interface LessonVideoPlayerProps {
   transcript: TranscriptSegment[];
   currentTime: number;
   onTimeUpdate: (time: number) => void;
+  onPlay?: () => void;
+  onPause?: () => void;
+  onSeek?: (time: number) => void;
 }
 
 const LessonVideoPlayer = forwardRef<HTMLVideoElement, LessonVideoPlayerProps>(
-  ({ videoUrl, transcript, currentTime, onTimeUpdate }, ref) => {
+  ({ videoUrl, transcript, currentTime, onTimeUpdate, onPlay, onPause, onSeek }, ref) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [isMuted, setIsMuted] = useState(false);
     const [showControls, setShowControls] = useState(true);
     const [duration, setDuration] = useState(0);
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [activeTranscriptId, setActiveTranscriptId] = useState<string | null>(null);
+    const [showTranscript, setShowTranscript] = useState(true);
+    const [transcriptSearch, setTranscriptSearch] = useState('');
     
     const videoRef = useRef<HTMLVideoElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -67,6 +72,7 @@ const LessonVideoPlayer = forwardRef<HTMLVideoElement, LessonVideoPlayerProps>(
         const newTime = percent * duration;
         videoRef.current.currentTime = newTime;
         onTimeUpdate(newTime);
+        onSeek?.(newTime);
       }
     };
 
@@ -74,6 +80,7 @@ const LessonVideoPlayer = forwardRef<HTMLVideoElement, LessonVideoPlayerProps>(
       if (videoRef.current) {
         videoRef.current.currentTime = segment.startTime;
         onTimeUpdate(segment.startTime);
+        onSeek?.(segment.startTime);
       }
     };
 
@@ -112,11 +119,11 @@ const LessonVideoPlayer = forwardRef<HTMLVideoElement, LessonVideoPlayerProps>(
         animate={{ opacity: 1, y: 0 }}
         className="bg-card rounded-xl overflow-hidden shadow-lg"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 p-4">
-          {/* Video Player */}
-          <div className="lg:col-span-3">
+        <div className="space-y-6 p-6">
+          {/* Large Video Player */}
+          <div className="w-full">
             <div 
-              className="relative bg-black rounded-lg overflow-hidden group cursor-pointer"
+              className="relative bg-black rounded-xl overflow-hidden group cursor-pointer shadow-xl"
               onMouseEnter={() => setShowControls(true)}
               onMouseLeave={() => setShowControls(false)}
             >
@@ -126,8 +133,14 @@ const LessonVideoPlayer = forwardRef<HTMLVideoElement, LessonVideoPlayerProps>(
                 className="w-full aspect-video object-cover"
                 onTimeUpdate={handleTimeUpdate}
                 onLoadedMetadata={handleLoadedMetadata}
-                onPlay={() => setIsPlaying(true)}
-                onPause={() => setIsPlaying(false)}
+                onPlay={() => {
+                  setIsPlaying(true);
+                  onPlay?.();
+                }}
+                onPause={() => {
+                  setIsPlaying(false);
+                  onPause?.();
+                }}
               />
               
               {/* AI Badge */}
@@ -172,15 +185,30 @@ const LessonVideoPlayer = forwardRef<HTMLVideoElement, LessonVideoPlayerProps>(
                       {/* Control Buttons */}
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                          <button onClick={skipBackward} className="text-white hover:text-primary transition-colors">
+                          <button 
+                            onClick={skipBackward} 
+                            className="text-white hover:text-primary transition-colors"
+                            title="Reculer de 10 secondes"
+                            aria-label="Reculer de 10 secondes"
+                          >
                             <RotateCcw className="w-5 h-5" />
                           </button>
                           
-                          <button onClick={handlePlayPause} className="text-white hover:text-primary transition-colors">
+                          <button 
+                            onClick={handlePlayPause} 
+                            className="text-white hover:text-primary transition-colors"
+                            title={isPlaying ? "Mettre en pause" : "Lire"}
+                            aria-label={isPlaying ? "Mettre en pause" : "Lire"}
+                          >
                             {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
                           </button>
                           
-                          <button onClick={skipForward} className="text-white hover:text-primary transition-colors">
+                          <button 
+                            onClick={skipForward} 
+                            className="text-white hover:text-primary transition-colors"
+                            title="Avancer de 10 secondes"
+                            aria-label="Avancer de 10 secondes"
+                          >
                             <SkipForward className="w-5 h-5" />
                           </button>
                           
@@ -192,6 +220,8 @@ const LessonVideoPlayer = forwardRef<HTMLVideoElement, LessonVideoPlayerProps>(
                               }
                             }}
                             className="text-white hover:text-primary transition-colors"
+                            title={isMuted ? "Activer le son" : "Couper le son"}
+                            aria-label={isMuted ? "Activer le son" : "Couper le son"}
                           >
                             {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
                           </button>
@@ -201,7 +231,12 @@ const LessonVideoPlayer = forwardRef<HTMLVideoElement, LessonVideoPlayerProps>(
                           </span>
                         </div>
                         
-                        <button onClick={toggleFullscreen} className="text-white hover:text-primary transition-colors">
+                        <button 
+                          onClick={toggleFullscreen} 
+                          className="text-white hover:text-primary transition-colors"
+                          title="Plein écran"
+                          aria-label="Plein écran"
+                        >
                           <Maximize2 className="w-5 h-5" />
                         </button>
                       </div>
@@ -212,43 +247,99 @@ const LessonVideoPlayer = forwardRef<HTMLVideoElement, LessonVideoPlayerProps>(
             </div>
           </div>
 
-          {/* Transcript Panel */}
-          <div className="lg:col-span-2 bg-background/50 rounded-lg p-4">
-            <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
-              📝 Transcription synchronisée
-            </h3>
-            
-            <div className="space-y-3 max-h-80 overflow-y-auto">
-              {transcript.map((segment) => (
-                <motion.div
-                  key={segment.id}
-                  onClick={() => handleTranscriptClick(segment)}
-                  className={`p-3 rounded-lg cursor-pointer transition-all ${
-                    activeTranscriptId === segment.id
-                      ? 'bg-primary/20 border-primary/50 border'
-                      : 'bg-muted/50 hover:bg-muted/80'
-                  }`}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+          {/* Caption-Style Transcript */}
+          {transcript.length > 0 && (
+            <div className="bg-background/50 rounded-xl border border-border">
+              {/* Transcript Header */}
+              <div className="flex items-center justify-between p-4 border-b border-border">
+                <h3 className="font-semibold text-foreground flex items-center gap-2">
+                  📝 Transcription synchronisée
+                </h3>
+                <button
+                  onClick={() => setShowTranscript(!showTranscript)}
+                  className="p-2 rounded-lg bg-secondary/50 hover:bg-secondary text-secondary-foreground transition-colors"
+                  title={showTranscript ? 'Masquer la transcription' : 'Afficher la transcription'}
                 >
-                  <div className="flex items-start gap-2">
-                    <span className="text-xs text-muted-foreground min-w-[50px]">
-                      {formatTime(segment.startTime)}
-                    </span>
-                    <p className={`text-sm leading-relaxed ${
-                      activeTranscriptId === segment.id ? 'text-primary font-medium' : 'text-foreground'
-                    }`}>
-                      {segment.text}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
+                  {showTranscript ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+
+              <AnimatePresence>
+                {showTranscript && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="p-4"
+                  >
+                    {/* Search Box */}
+                    <div className="relative mb-4">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                      <input
+                        type="text"
+                        placeholder="Rechercher dans la transcription..."
+                        value={transcriptSearch}
+                        onChange={(e) => setTranscriptSearch(e.target.value)}
+                        className="w-full pl-10 pr-4 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      />
+                    </div>
+
+                    {/* Caption-Style Transcript Content */}
+                    <div className="space-y-2 max-h-64 overflow-y-auto">
+                      {transcript
+                        .filter(segment => 
+                          transcriptSearch === '' || 
+                          segment.text.toLowerCase().includes(transcriptSearch.toLowerCase())
+                        )
+                        .map((segment) => (
+                        <motion.div
+                          key={segment.id}
+                          onClick={() => handleTranscriptClick(segment)}
+                          className={`p-3 rounded-lg cursor-pointer transition-all ${
+                            activeTranscriptId === segment.id
+                              ? 'bg-primary/20 border-primary/50 border'
+                              : 'bg-muted/30 hover:bg-muted/50'
+                          }`}
+                          whileHover={{ scale: 1.01 }}
+                          whileTap={{ scale: 0.99 }}
+                        >
+                          <div className="flex items-start gap-3">
+                            <span className="text-xs text-muted-foreground min-w-[45px] font-mono">
+                              {formatTime(segment.startTime)}
+                            </span>
+                            <p className={`text-sm leading-relaxed ${
+                              activeTranscriptId === segment.id ? 'text-primary font-medium' : 'text-foreground'
+                            }`}>
+                              {transcriptSearch && (
+                                <span dangerouslySetInnerHTML={{
+                                  __html: segment.text.replace(
+                                    new RegExp(`(${transcriptSearch})`, 'gi'),
+                                    '<mark class="bg-yellow-200 text-black rounded px-1">$1</mark>'
+                                  )
+                                }} />
+                              ) || segment.text}
+                            </p>
+                          </div>
+                        </motion.div>
+                      ))}
+                      
+                      {transcriptSearch && transcript.filter(segment => 
+                        segment.text.toLowerCase().includes(transcriptSearch.toLowerCase())
+                      ).length === 0 && (
+                        <div className="text-center py-8 text-muted-foreground">
+                          Aucun résultat trouvé pour "{transcriptSearch}"
+                        </div>
+                      )}
+                    </div>
+                    
+                    <div className="mt-4 text-xs text-muted-foreground">
+                      💡 Cliquez sur un segment pour naviguer dans la vidéo
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
-            
-            <div className="mt-4 text-xs text-muted-foreground">
-              💡 Cliquez sur un segment pour naviguer dans la vidéo
-            </div>
-          </div>
+          )}
         </div>
       </motion.div>
     );

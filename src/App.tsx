@@ -8,6 +8,10 @@ import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import DashboardPage from './pages/DashboardPage';
 import RoleSelectionPage from './pages/RoleSelectionPage';
+import EbooksPage from './pages/magasin/EbooksPage';
+import VideosPage from './pages/magasin/VideosPage';
+import LivesPage from './pages/magasin/LivesPage';
+import FormationPage from './pages/magasin/FormationPage';
 import MainLayout from './layout/MainLayout';
 import ScrollToTop from './components/ScrollToTop';
 import { AuthProvider } from './context/AuthContext';
@@ -70,6 +74,28 @@ function App() {
           <Route path="/studio" element={
             <MainLayout>
               <StudioPage />
+            </MainLayout>
+          } />
+          
+          {/* Magasin routes */}
+          <Route path="/magasin/ebooks" element={
+            <MainLayout>
+              <EbooksPage />
+            </MainLayout>
+          } />
+          <Route path="/magasin/videos" element={
+            <MainLayout>
+              <VideosPage />
+            </MainLayout>
+          } />
+          <Route path="/magasin/lives" element={
+            <MainLayout>
+              <LivesPage />
+            </MainLayout>
+          } />
+          <Route path="/magasin/formation" element={
+            <MainLayout>
+              <FormationPage />
             </MainLayout>
           } />
         </Routes>

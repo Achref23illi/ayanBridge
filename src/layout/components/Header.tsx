@@ -1,20 +1,27 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../../components/ui/Button';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
 
 const navLinks = [
-  { href: '/marketplace', text: 'Magasin' },
   { href: '/learn', text: 'Learn Hub' },
   { href: '/invest', text: 'Club Investisseur' },
   { href: '/studio', text: 'Studio' },
 ];
 
+const magasinDropdownItems = [
+  { href: '/magasin/ebooks', text: 'Ebooks' },
+  { href: '/magasin/videos', text: 'Videos' },
+  { href: '/magasin/lives', text: 'Lives' },
+  { href: '/magasin/formation', text: 'Formation' },
+];
+
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
+  const [isMagasinDropdownOpen, setIsMagasinDropdownOpen] = useState(false);
   const { isAuthenticated, user, logout } = useAuth();
 
   useEffect(() => {
@@ -38,6 +45,39 @@ const Header = () => {
         
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-6">
+          {/* Magasin Dropdown */}
+          <div 
+            className="relative"
+            onMouseEnter={() => setIsMagasinDropdownOpen(true)}
+            onMouseLeave={() => setIsMagasinDropdownOpen(false)}
+          >
+            <button className="flex items-center space-x-1 text-white hover:text-primary transition-colors">
+              <span>Magasin</span>
+              <ChevronDown className="h-4 w-4" />
+            </button>
+            <AnimatePresence>
+              {isMagasinDropdownOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
+                >
+                  {magasinDropdownItems.map(item => (
+                    <Link
+                      key={item.href}
+                      to={item.href}
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-primary transition-colors"
+                    >
+                      {item.text}
+                    </Link>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
           {navLinks.map(link => (
             <Link key={link.href} to={link.href} className="text-white hover:text-primary transition-colors">
               {link.text}
@@ -105,6 +145,23 @@ const Header = () => {
                 </Button>
               </div>
               <div className="flex flex-col space-y-6">
+                {/* Magasin Section */}
+                <div>
+                  <div className="text-xl text-white font-semibold mb-3">Magasin</div>
+                  <div className="pl-4 space-y-2">
+                    {magasinDropdownItems.map(item => (
+                      <Link
+                        key={item.href}
+                        to={item.href}
+                        className="block text-lg text-white/80 hover:text-primary transition-colors"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        {item.text}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+                
                 {navLinks.map(link => (
                   <Link key={link.href} to={link.href} className="text-xl text-white hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>
                     {link.text}
