@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BookOpen, Languages, Lightbulb, Code, X, Sparkles, Copy, Check } from 'lucide-react';
+import { BookOpen, Languages, Lightbulb, X, Sparkles, Copy, Check } from 'lucide-react';
 
 interface ContextualHelperMenuProps {
   selectedText: string;
@@ -52,7 +52,7 @@ const ContextualHelperMenu: React.FC<ContextualHelperMenuProps> = ({
         }
         return `Définition de "${text}" : Un concept clé en informatique et mathématiques appliquées, particulièrement important dans le contexte de cette leçon.`;
         
-      case 'translation':
+      case 'translation': {
         const translations: { [key: string]: { [key: string]: string } } = {
           'machine learning': {
             en: 'Machine Learning',
@@ -82,6 +82,7 @@ const ContextualHelperMenu: React.FC<ContextualHelperMenuProps> = ({
         
         const translation = translations[lowerText]?.[language || 'en'];
         return translation || `"${text}" translated to ${languages.find(l => l.code === language)?.name}: [Translation]`;
+      }
         
       case 'explanation':
         if (lowerText.includes('machine learning')) {
@@ -92,7 +93,7 @@ const ContextualHelperMenu: React.FC<ContextualHelperMenuProps> = ({
         }
         return `Explication détaillée de "${text}" : Ce concept est fondamental car il établit les bases théoriques nécessaires pour comprendre les applications pratiques dans le domaine.`;
         
-      case 'example':
+      case 'example': {
         if (lowerText.includes('machine learning')) {
           return "Exemple concret : Spotify utilise le ML pour créer vos playlists personnalisées. L'algorithme analyse vos écoutes passées, les compare à celles d'utilisateurs similaires, et recommande de nouvelles chansons que vous pourriez aimer.";
         }
@@ -100,6 +101,7 @@ const ContextualHelperMenu: React.FC<ContextualHelperMenuProps> = ({
           return "Exemple pratique : Pour prédire le prix d'une maison, la régression linéaire utilise des variables comme la superficie, le nombre de chambres, et la localisation pour calculer une estimation de prix basée sur des ventes passées.";
         }
         return `Exemple d'application de "${text}" : Dans un contexte réel, ce concept est utilisé pour optimiser les processus et améliorer les performances des systèmes intelligents.`;
+      }
         
       default:
         return `Information sur "${text}" : Concept important dans le contexte de cette leçon.`;
@@ -114,7 +116,7 @@ const ContextualHelperMenu: React.FC<ContextualHelperMenuProps> = ({
     await new Promise(resolve => setTimeout(resolve, 800 + Math.random() * 400));
     
     const response: ContextualResponse = {
-      type: type as any,
+      type: type as 'definition' | 'translation' | 'explanation' | 'example',
       content: getMockResponse(type, selectedText, selectedLanguage),
       language: type === 'translation' ? selectedLanguage : undefined
     };
@@ -196,7 +198,7 @@ const ContextualHelperMenu: React.FC<ContextualHelperMenuProps> = ({
         top: adjustedPosition.y,
         zIndex: 1000
       }}
-      className="bg-card border border-border rounded-xl shadow-xl p-4 max-w-sm"
+      className="bg-white dark:bg-gray-800 border border-border rounded-xl shadow-xl p-4 max-w-sm backdrop-blur-sm"
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
@@ -209,6 +211,7 @@ const ContextualHelperMenu: React.FC<ContextualHelperMenuProps> = ({
         <button
           onClick={onClose}
           className="p-1 hover:bg-muted rounded-lg transition-colors"
+          title="Fermer le menu d'aide"
         >
           <X className="w-4 h-4 text-muted-foreground" />
         </button>
@@ -240,6 +243,7 @@ const ContextualHelperMenu: React.FC<ContextualHelperMenuProps> = ({
             value={selectedLanguage}
             onChange={(e) => setSelectedLanguage(e.target.value)}
             className="w-full p-2 bg-background border border-border rounded-lg text-sm"
+            title="Sélectionner la langue de traduction"
           >
             {languages.map((lang) => (
               <option key={lang.code} value={lang.code}>
