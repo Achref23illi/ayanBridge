@@ -4,6 +4,78 @@ export const mockLessonData: LessonData = {
   id: 'lesson-1',
   title: 'Introduction aux Algorithmes de Machine Learning',
   videoUrl: 'https://storage.googleapis.com/works23/ayanBridge/Machine%20Learning%20Explained%20in%20100%20Seconds.mp4',
+  content: `# Introduction aux Algorithmes de Machine Learning
+
+Le **machine learning** est une branche de l'intelligence artificielle qui permet aux machines d'apprendre et de s'améliorer automatiquement à partir de l'expérience sans être explicitement programmées.
+
+## Objectifs de cette leçon
+
+- Comprendre les concepts fondamentaux du ML
+- Découvrir les différents types d'algorithmes
+- Apprendre à choisir le bon algorithme pour un problème donné
+
+## Types d'apprentissage
+
+Il existe trois grands types d'apprentissage automatique :
+
+### 1. Apprentissage supervisé
+L'algorithme apprend à partir d'exemples étiquetés. On fournit à l'algorithme des données d'entrée avec les réponses correctes correspondantes.
+
+**Exemples d'applications :**
+- Classification d'emails (spam ou non-spam)
+- Reconnaissance d'images
+- Prédiction de prix immobiliers
+
+### 2. Apprentissage non supervisé
+L'algorithme découvre des patterns dans les données sans avoir d'exemples étiquetés.
+
+**Exemples d'applications :**
+- Segmentation de clientèle
+- Détection d'anomalies
+- Réduction de dimensionnalité
+
+### 3. Apprentissage par renforcement
+L'algorithme apprend par essai-erreur en interagissant avec un environnement.
+
+**Exemples d'applications :**
+- Jeux vidéo (AlphaGo, chess)
+- Voitures autonomes
+- Trading algorithmique
+
+## Algorithmes populaires
+
+### Régression linéaire
+La **régression linéaire** est l'un des algorithmes les plus simples et les plus utilisés en machine learning.
+
+### Decision Trees (Arbres de décision)
+Les arbres de décision sont faciles à interpréter et visualiser.
+
+**Avantages :**
+- Faciles à comprendre
+- Peu de préparation des données nécessaire
+- Gèrent les variables numériques et catégorielles
+
+**Inconvénients :**
+- Tendance au surapprentissage
+- Instables (petits changements dans les données peuvent créer des arbres très différents)
+
+## Conclusion
+
+Dans cette leçon, nous avons exploré :
+
+1. ✅ Les concepts de base du machine learning
+2. ✅ Les trois types d'apprentissage principaux
+3. ✅ Quelques algorithmes populaires et leurs cas d'usage
+
+### Prochaines étapes
+
+Pour approfondir vos connaissances :
+
+- Pratiquez avec des datasets réels
+- Explorez les bibliothèques comme scikit-learn, TensorFlow
+- Participez à des compétitions Kaggle
+
+> **Astuce** : Commencez toujours par des problèmes simples avant de vous attaquer à des cas complexes !`,
   sections: [
     {
       id: 'intro',

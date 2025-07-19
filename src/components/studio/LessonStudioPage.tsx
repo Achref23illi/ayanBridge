@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Upload, FileText, Play, Pause, MessageCircle, Settings, Brain, Minimize2, Maximize2, Pin, PinOff, X, BookOpen, CheckCircle, ArrowRight } from 'lucide-react';
+import { Upload, FileText, Play, Pause, Settings, Brain, Minimize2, Maximize2, Pin, PinOff, X, CheckCircle, ArrowRight, GraduationCap, Briefcase, Edit, Globe, Save, X as CloseIcon } from 'lucide-react';
 import type { LessonData, FileUploadState } from '../../types/studio';
 import { mockLessonData } from '../../data/mockLesson';
 import LessonVideoPlayer from './LessonVideoPlayer';
@@ -15,6 +15,9 @@ interface LessonStudioPageProps {
   className?: string;
 }
 
+type CourseType = 'educational' | 'non-educational' | null;
+type CreationStep = 'course-type' | 'file-upload' | 'trainer-mode' | 'generating';
+
 const LessonStudioPage: React.FC<LessonStudioPageProps> = ({ className }) => {
   const [lessonData, setLessonData] = useState<LessonData | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
@@ -26,7 +29,7 @@ const LessonStudioPage: React.FC<LessonStudioPageProps> = ({ className }) => {
   const [isVideoMinimized, setIsVideoMinimized] = useState(false);
   const [isVideoPinned, setIsVideoPinned] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [pipSize, setPipSize] = useState<'small' | 'medium' | 'large'>('medium');
+
   const [pipDimensions, setPipDimensions] = useState({ width: 400, height: 225 });
   const [pipPosition, setPipPosition] = useState({ x: window.innerWidth - 420, y: 80 });
   const [isResizing, setIsResizing] = useState(false);
@@ -36,6 +39,18 @@ const LessonStudioPage: React.FC<LessonStudioPageProps> = ({ className }) => {
     isUploading: false,
     progress: 0
   });
+
+  // New state for course creation flow
+  const [courseType, setCourseType] = useState<CourseType>(null);
+  const [currentStep, setCurrentStep] = useState<CreationStep>('course-type');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  // New state for edit and publish functionality
+  const [isEditing, setIsEditing] = useState(false);
+  const [isPublishing, setIsPublishing] = useState(false);
+  const [publishProgress, setPublishProgress] = useState(0);
+  const [showPublishModal, setShowPublishModal] = useState(false);
+  const [editedContent, setEditedContent] = useState('');
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const pipVideoRef = useRef<HTMLVideoElement>(null);
@@ -57,10 +72,18 @@ const LessonStudioPage: React.FC<LessonStudioPageProps> = ({ className }) => {
   }, [isVideoPinned]);
 
   const handleFileUpload = async (file: File) => {
+    setSelectedFile(file);
+    setCurrentStep('trainer-mode');
+  };
+
+  const handleGenerateCourse = async () => {
+    if (!selectedFile) return;
+    
+    setCurrentStep('generating');
     setUploadState({
       isUploading: true,
       progress: 0,
-      fileName: file.name
+      fileName: selectedFile.name
     });
 
     // Simulate file processing
@@ -75,9 +98,73 @@ const LessonStudioPage: React.FC<LessonStudioPageProps> = ({ className }) => {
       setUploadState({
         isUploading: false,
         progress: 100,
-        fileName: file.name
+        fileName: selectedFile.name
       });
+      setCurrentStep('course-type');
+      setCourseType(null);
+      setSelectedFile(null);
+      setIsTrainerMode(false);
     }, 500);
+  };
+
+  const handleCourseTypeSelect = (type: CourseType) => {
+    setCourseType(type);
+    setCurrentStep('file-upload');
+  };
+
+  const handleBackToCourseType = () => {
+    setCurrentStep('course-type');
+    setCourseType(null);
+    setSelectedFile(null);
+  };
+
+  const handleBackToFileUpload = () => {
+    setCurrentStep('file-upload');
+    setSelectedFile(null);
+  };
+
+  // Edit and Publish handlers
+  const handleEdit = () => {
+    setIsEditing(true);
+    // Initialize edited content with current lesson content
+    setEditedContent(lessonData?.content || '');
+  };
+
+  const handleSaveEdit = () => {
+    if (lessonData) {
+      setLessonData({
+        ...lessonData,
+        content: editedContent
+      });
+    }
+    setIsEditing(false);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditedContent('');
+  };
+
+  const handlePublish = () => {
+    setShowPublishModal(true);
+    setIsPublishing(true);
+    setPublishProgress(0);
+    
+    // Simulate publishing process
+    const interval = setInterval(() => {
+      setPublishProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setTimeout(() => {
+            setIsPublishing(false);
+            setShowPublishModal(false);
+            setPublishProgress(0);
+          }, 1000);
+          return 100;
+        }
+        return prev + 10;
+      });
+    }, 200);
   };
 
   const handleTextSelection = (text: string, position: { x: number; y: number }) => {
@@ -277,17 +364,7 @@ const LessonStudioPage: React.FC<LessonStudioPageProps> = ({ className }) => {
     }
   };
 
-  // Get PiP size classes (for preset sizes)
-  const getPipSizeClasses = () => {
-    switch (pipSize) {
-      case 'small':
-        return 'w-64 h-36';
-      case 'large':
-        return 'w-96 h-54';
-      default:
-        return 'w-80 h-45';
-    }
-  };
+
 
   if (!lessonData) {
     return (
@@ -303,7 +380,7 @@ const LessonStudioPage: React.FC<LessonStudioPageProps> = ({ className }) => {
               <div>
                 <h1 className="text-3xl font-bold text-foreground flex items-center gap-3">
                   <Brain className="w-8 h-8 text-primary" />
-                  Studio Professeur
+                  Studio AI
                   <span className="text-sm bg-primary/10 text-primary px-2 py-1 rounded-full font-normal">
                     Powered by AI
                   </span>
@@ -315,26 +392,22 @@ const LessonStudioPage: React.FC<LessonStudioPageProps> = ({ className }) => {
               
               <div className="flex gap-3">
                 <button
-                  onClick={() => setIsTrainerMode(!isTrainerMode)}
-                  className={`px-4 py-2 rounded-lg flex items-center gap-2 transition-colors ${
-                    isTrainerMode 
-                      ? 'bg-primary text-primary-foreground' 
-                      : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
-                  }`}
+                  onClick={() => setLessonData(null)}
+                  className="px-4 py-2 rounded-lg bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors flex items-center gap-2"
                 >
-                  <Settings className="w-4 h-4" />
-                  Mode Formateur
+                  <FileText className="w-4 h-4" />
+                  Nouveau cours
                 </button>
               </div>
             </div>
 
-            {/* Upload Area */}
+            {/* Course Creation Flow */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               className="border-2 border-dashed border-border rounded-xl p-12 text-center bg-card/50"
             >
-              {uploadState.isUploading ? (
+              {currentStep === 'generating' && uploadState.isUploading ? (
                 <div className="space-y-4">
                   <div className="flex justify-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
@@ -355,10 +428,76 @@ const LessonStudioPage: React.FC<LessonStudioPageProps> = ({ className }) => {
                     {uploadState.progress}% - Génération de la vidéo et des exercices...
                   </p>
                 </div>
-              ) : (
+              ) : currentStep === 'course-type' ? (
+                <div className="space-y-6">
+                  <div className="flex justify-center">
+                    <Brain className="w-16 h-16 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold">Choisissez le type de cours</h3>
+                  <p className="text-muted-foreground max-w-md mx-auto">
+                    Sélectionnez le type de cours que vous souhaitez créer pour optimiser la génération IA
+                  </p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => handleCourseTypeSelect('educational')}
+                      className="p-6 border-2 border-border rounded-xl hover:border-primary/50 hover:bg-primary/5 transition-all duration-200 text-left group"
+                    >
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                          <GraduationCap className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                        </div>
+                        <h4 className="font-semibold text-foreground">Cours Éducatif</h4>
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        Cours académiques, formations, tutoriels avec exercices et évaluations
+                      </p>
+                    </motion.button>
+                    
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => handleCourseTypeSelect('non-educational')}
+                      className="p-6 border-2 border-border rounded-xl hover:border-primary/50 hover:bg-primary/5 transition-all duration-200 text-left group"
+                    >
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                          <Briefcase className="w-6 h-6 text-green-600 dark:text-green-400" />
+                        </div>
+                        <h4 className="font-semibold text-foreground">Cours Non-Éducatif</h4>
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        Présentations, démonstrations, guides pratiques sans évaluation
+                      </p>
+                    </motion.button>
+                  </div>
+                  
+                  <button
+                    onClick={() => setLessonData(mockLessonData)}
+                    className="px-6 py-3 bg-secondary text-secondary-foreground rounded-lg hover:bg-secondary/80 transition-colors flex items-center gap-2 mx-auto"
+                  >
+                    <Play className="w-4 h-4" />
+                    Demo avec contenu exemple
+                  </button>
+                </div>
+              ) : currentStep === 'file-upload' ? (
                 <div className="space-y-4">
                   <div className="flex justify-center">
                     <Upload className="w-16 h-16 text-muted-foreground" />
+                  </div>
+                  <div className="flex items-center justify-center gap-2 mb-4">
+                    <button
+                      onClick={handleBackToCourseType}
+                      className="p-2 rounded-lg hover:bg-secondary/50 transition-colors"
+                      title="Retour au choix du type de cours"
+                    >
+                      <ArrowRight className="w-4 h-4 rotate-180" />
+                    </button>
+                    <span className="text-sm text-muted-foreground">
+                      {courseType === 'educational' ? 'Cours Éducatif' : 'Cours Non-Éducatif'}
+                    </span>
                   </div>
                   <h3 className="text-xl font-semibold">Déposez votre document ici</h3>
                   <p className="text-muted-foreground max-w-md mx-auto">
@@ -380,36 +519,45 @@ const LessonStudioPage: React.FC<LessonStudioPageProps> = ({ className }) => {
                         className="hidden"
                       />
                     </label>
-                    
-                    <button
-                      onClick={() => setLessonData(mockLessonData)}
-                      className="px-6 py-3 bg-secondary text-secondary-foreground rounded-lg hover:bg-secondary/80 transition-colors flex items-center gap-2"
-                    >
-                      <Play className="w-4 h-4" />
-                      Demo avec contenu exemple
-                    </button>
                   </div>
                   
                   <p className="text-xs text-muted-foreground">
                     Formats supportés: PDF, Word (.doc, .docx), PowerPoint (.ppt, .pptx)
                   </p>
                 </div>
-              )}
+              ) : currentStep === 'trainer-mode' ? (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-center gap-2 mb-4">
+                    <button
+                      onClick={handleBackToFileUpload}
+                      className="p-2 rounded-lg hover:bg-secondary/50 transition-colors"
+                      title="Retour à la sélection de fichier"
+                    >
+                      <ArrowRight className="w-4 h-4 rotate-180" />
+                    </button>
+                    <span className="text-sm text-muted-foreground">
+                      Fichier sélectionné: {selectedFile?.name}
+                    </span>
+                  </div>
+                  <h3 className="text-xl font-semibold">Configuration du Mode Formateur</h3>
+                  <p className="text-muted-foreground max-w-md mx-auto">
+                    Activez le mode formateur pour des options avancées de personnalisation
+                  </p>
+                  
+                  <div className="flex gap-3 justify-center">
+                    <button
+                      onClick={handleGenerateCourse}
+                      className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2"
+                    >
+                      <CheckCircle className="w-4 h-4" />
+                      Générer le cours
+                    </button>
+                  </div>
+                </div>
+              ) : null}
             </motion.div>
 
-            {/* Trainer Mode Panel */}
-            <AnimatePresence>
-              {isTrainerMode && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="mt-6"
-                >
-                  <TrainerModePanel onLoadTemplate={(template) => setLessonData(mockLessonData)} />
-                </motion.div>
-              )}
-            </AnimatePresence>
+
           </motion.div>
         </div>
       </div>
@@ -447,6 +595,22 @@ const LessonStudioPage: React.FC<LessonStudioPageProps> = ({ className }) => {
           
           <div className="flex gap-3">
             <button
+              onClick={handleEdit}
+              className="px-3 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors text-sm flex items-center gap-2"
+            >
+              <Edit className="w-4 h-4" />
+              Modifier
+            </button>
+            
+            <button
+              onClick={handlePublish}
+              className="px-3 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors text-sm flex items-center gap-2"
+            >
+              <Globe className="w-4 h-4" />
+              Publier
+            </button>
+            
+            <button
               onClick={() => setIsTrainerMode(!isTrainerMode)}
               className={`px-3 py-2 rounded-lg flex items-center gap-2 text-sm transition-colors ${
                 isTrainerMode 
@@ -462,10 +626,125 @@ const LessonStudioPage: React.FC<LessonStudioPageProps> = ({ className }) => {
               onClick={() => setLessonData(null)}
               className="px-3 py-2 rounded-lg bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors text-sm"
             >
-              Nouveau document
+              Nouveau cours
             </button>
           </div>
         </motion.div>
+
+        {/* Trainer Mode Panel */}
+        <AnimatePresence>
+          {isTrainerMode && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="mb-6"
+            >
+              <TrainerModePanel onLoadTemplate={() => setLessonData(mockLessonData)} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Text Editor Modal */}
+        <AnimatePresence>
+          {isEditing && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                className="bg-card rounded-xl shadow-2xl border border-border w-full max-w-4xl h-[80vh] flex flex-col"
+              >
+                {/* Editor Header */}
+                <div className="flex items-center justify-between p-4 border-b border-border">
+                  <h3 className="text-lg font-semibold text-foreground">Modifier le contenu du cours</h3>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={handleSaveEdit}
+                      className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2"
+                    >
+                      <Save className="w-4 h-4" />
+                      Sauvegarder
+                    </button>
+                    <button
+                      onClick={handleCancelEdit}
+                      className="px-4 py-2 bg-secondary text-secondary-foreground rounded-lg hover:bg-secondary/80 transition-colors flex items-center gap-2"
+                    >
+                      <CloseIcon className="w-4 h-4" />
+                      Annuler
+                    </button>
+                  </div>
+                </div>
+
+                {/* Editor Content */}
+                <div className="flex-1 p-4">
+                  <textarea
+                    value={editedContent}
+                    onChange={(e) => setEditedContent(e.target.value)}
+                    className="w-full h-full p-4 bg-background border border-border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                    placeholder="Modifiez le contenu de votre cours ici..."
+                  />
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Publish Modal */}
+        <AnimatePresence>
+          {showPublishModal && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                className="bg-card rounded-xl shadow-2xl border border-border w-full max-w-md p-6"
+              >
+                <div className="text-center space-y-4">
+                  <div className="flex justify-center">
+                    <Globe className="w-12 h-12 text-green-600" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-foreground">Publication en cours...</h3>
+                  <p className="text-muted-foreground">
+                    {isPublishing ? 'Publication de votre cours sur la plateforme' : 'Cours publié avec succès!'}
+                  </p>
+                  
+                  <div className="w-full bg-secondary rounded-full h-3">
+                    <motion.div 
+                      className="bg-green-600 h-3 rounded-full"
+                      initial={{ width: 0 }}
+                      animate={{ width: `${publishProgress}%` }}
+                      transition={{ duration: 0.3 }}
+                    />
+                  </div>
+                  
+                  <p className="text-sm text-muted-foreground">
+                    {publishProgress}% - {isPublishing ? 'Traitement...' : 'Terminé!'}
+                  </p>
+                  
+                  {!isPublishing && publishProgress >= 100 && (
+                    <button
+                      onClick={() => setShowPublishModal(false)}
+                      className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+                    >
+                      Fermer
+                    </button>
+                  )}
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Main Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
@@ -762,7 +1041,7 @@ const LessonStudioPage: React.FC<LessonStudioPageProps> = ({ className }) => {
               exit={{ opacity: 0, y: 20 }}
               className="mt-6"
             >
-              <TrainerModePanel onLoadTemplate={(template) => setLessonData(mockLessonData)} />
+                              <TrainerModePanel onLoadTemplate={() => setLessonData(mockLessonData)} />
             </motion.div>
           )}
         </AnimatePresence>

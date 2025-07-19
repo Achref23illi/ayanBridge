@@ -40,6 +40,7 @@ export interface LessonData {
   id: string;
   title: string;
   videoUrl: string;
+  content: string;
   sections: LessonSection[];
   transcript: TranscriptSegment[];
   exercises: ExerciseQuestion[];
